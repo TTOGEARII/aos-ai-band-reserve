@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-   8분음표 두 개를 빔으로 이은 모양. 어댑티브 아이콘 안전영역(중앙 66dp) 안에 그린다.
+   에네 볼의 기계 단자를 연상시키는 추상 마크: 시안 오디오 잭 단면(둥근 사다리꼴 탭)에
+   네이비 그릴 슬릿 2개 + 아래 커넥터 핀. 어댑티브 아이콘 안전영역(중앙 66dp) 안에 그린다.
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
@@ -7,25 +8,25 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
     <group>
-        <!-- 왼쪽 음표 머리 -->
+        <!-- 탭 몸체 (오디오 잭 단면), 시안 -->
         <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M44,70 m-6.5,0 a6.5,6.5 0 1,0 13,0 a6.5,6.5 0 1,0 -13,0" />
-        <!-- 왼쪽 기둥 -->
+            android:fillColor="#53D1FF"
+            android:pathData="M40,30 L68,30 Q74,30 72.62,35.84 L65.92,64.11 Q65,68 61,68 L47,68 Q43,68 42.08,64.11 L35.38,35.84 Q34,30 40,30 Z" />
+        <!-- 그릴 슬릿 1 (네이비로 파냄) -->
         <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M48.6,42 L51.2,42 L51.2,70 L48.6,70 Z" />
-        <!-- 오른쪽 음표 머리 -->
+            android:fillColor="#0A141F"
+            android:pathData="M44,39.5 L64,39.5 A2.5,2.5 0 0 1 64,44.5 L44,44.5 A2.5,2.5 0 0 1 44,39.5 Z" />
+        <!-- 그릴 슬릿 2 (몸체 테이퍼를 따라 더 좁게) -->
         <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M64,66 m-6.5,0 a6.5,6.5 0 1,0 13,0 a6.5,6.5 0 1,0 -13,0" />
-        <!-- 오른쪽 기둥 -->
+            android:fillColor="#0A141F"
+            android:pathData="M46,49.5 L62,49.5 A2.5,2.5 0 0 1 62,54.5 L46,54.5 A2.5,2.5 0 0 1 46,49.5 Z" />
+        <!-- 커넥터 핀, 짙은 파랑 -->
         <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M68.6,38 L71.2,38 L71.2,66 L68.6,66 Z" />
-        <!-- 빔 -->
+            android:fillColor="#29B6F6"
+            android:pathData="M49,68 L59,68 L59,74 Q59,77 56,77 L52,77 Q49,77 49,74 Z" />
+        <!-- 모서리 하이라이트 -->
         <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M48.6,42 L71.2,38 L71.2,45.5 L48.6,49.5 Z" />
+            android:fillColor="#E1F5FE"
+            android:pathData="M41.5,33.5 L45.5,33.5 A1.5,1.5 0 0 1 45.5,36.5 L41.5,36.5 A1.5,1.5 0 0 1 41.5,33.5 Z" />
     </group>
 </vector>

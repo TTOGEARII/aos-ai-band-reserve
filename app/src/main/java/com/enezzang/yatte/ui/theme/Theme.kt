@@ -12,12 +12,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 private val LightColors = lightColorScheme(
-    primary = Violet700,
+    primary = Cyan800,
     onPrimary = Color.White,
-    primaryContainer = Violet200,
-    onPrimaryContainer = Violet900,
-    secondary = Violet800,
+    primaryContainer = Cyan100,
+    onPrimaryContainer = Cyan900,
+    secondary = Cyan900,
     onSecondary = Color.White,
+    // 세그먼트 선택·FilledTonalButton이 이 슬롯을 쓴다. 안 주면 M3 기본 연보라가 샌다.
+    secondaryContainer = Cyan200,
+    onSecondaryContainer = Cyan900,
     background = Bg,
     onBackground = Ink,
     surface = Bg,
@@ -25,7 +28,7 @@ private val LightColors = lightColorScheme(
     surfaceVariant = SurfaceDim,
     onSurfaceVariant = MutedOnLight,
     // 드롭다운·다이얼로그가 색을 가져가는 계열. 비워 두면 M3가 primary에서 파생한
-    // 보라끼 도는 회색을 깔아 지면이 탁해진다.
+    // 푸른끼 도는 회색을 제멋대로 깔아 지면이 탁해진다.
     surfaceContainerLowest = SurfaceLight,
     surfaceContainerLow = SurfaceLight,
     surfaceContainer = SurfaceLight,
@@ -42,12 +45,14 @@ private val LightColors = lightColorScheme(
 )
 
 private val DarkColors = darkColorScheme(
-    primary = Violet300,
-    onPrimary = Violet950,
-    primaryContainer = Violet900,
-    onPrimaryContainer = Violet200,
-    secondary = Violet400,
-    onSecondary = Violet950,
+    primary = Cyan400,
+    onPrimary = Navy950,
+    primaryContainer = Cyan900,
+    onPrimaryContainer = Cyan100,
+    secondary = Cyan300,
+    onSecondary = Navy950,
+    secondaryContainer = Color(0xFF1B4A66),
+    onSecondaryContainer = Cyan100,
     background = BgDark,
     onBackground = InkDark,
     surface = BgDark,
@@ -76,7 +81,7 @@ private val DarkColors = darkColorScheme(
 data class EnezzangYatteTokens(
     val hairline: Color,
     val muted: Color,
-    /** 내(사용자) 말풍선 — 액센트 지면. */
+    /** 내(사용자) 말풍선 — 에네 블루 지면. */
     val bubbleUser: Color,
     val onBubbleUser: Color,
     /** 에이전트 말풍선 — 카드 지면. */
@@ -92,7 +97,7 @@ data class EnezzangYatteTokens(
 private val LightTokens = EnezzangYatteTokens(
     hairline = HairlineLight,
     muted = MutedOnLight,
-    bubbleUser = Violet700,
+    bubbleUser = Cyan800,
     onBubbleUser = Color.White,
     bubbleAssistant = SurfaceLight,
     onBubbleAssistant = Ink,
@@ -104,8 +109,8 @@ private val LightTokens = EnezzangYatteTokens(
 private val DarkTokens = EnezzangYatteTokens(
     hairline = HairlineDark,
     muted = MutedOnDark,
-    bubbleUser = Violet800,
-    onBubbleUser = Violet100,
+    bubbleUser = BubbleUserDark,
+    onBubbleUser = OnBubbleUserDark,
     bubbleAssistant = SurfaceDark,
     onBubbleAssistant = InkDark,
     traceOk = OkGreenDark,
@@ -125,7 +130,7 @@ object EnezzangYatteTheme {
 
 /**
  * 다이내믹 컬러는 쓰지 않는다 — 기기 배경화면에서 색을 뽑으면
- * 보라 단일 액센트 위에 세운 말풍선 대비가 무너진다.
+ * 에네 시안 단일 액센트 위에 세운 말풍선 대비가 무너진다.
  */
 @Composable
 fun Enezzang_yatteTheme(

@@ -5,10 +5,10 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
     <path
-        android:fillColor="#6D28D9"
+        android:fillColor="#0A141F"
         android:pathData="M0,0h108v108h-108z" />
     <!-- 오른쪽 아래로 살짝 어두운 면을 깔아 단색이 심심하지 않게 -->
     <path
-        android:fillColor="#5B21B6"
+        android:fillColor="#071019"
         android:pathData="M108,0L108,108L0,108Z" />
 </vector>
