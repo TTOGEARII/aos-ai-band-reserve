@@ -1,0 +1,89 @@
+# main에 앱 코드가 올라오면 서명 번들을 빌드해 플레이 콘솔 '내부 테스트' 트랙에 올린다.
+# 비공개 테스트/프로덕션 승격은 콘솔에서 수동으로 한다(비공개 트랙의 연속 테스트 요건 보호).
+#
+# 필요한 저장소 시크릿 (Settings > Secrets and variables > Actions):
+#   KEYSTORE_BASE64            release.keystore를 base64 -i 로 인코딩한 값
+#   KEYSTORE_PASSWORD          keystore 비밀번호
+#   KEY_ALIAS                  서명 키 alias (enezzangyatte)
+#   KEY_PASSWORD               키 비밀번호 (keystore와 동일)
+#   ENEZZANG_YATTE_BASE_URL    운영 API 주소 (저장소에 주소를 박지 않는 규칙 유지)
+#   PLAY_SERVICE_ACCOUNT_JSON  Play Developer API 서비스 계정 JSON 전문
+name: deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'app/**'
+      - 'gradle/**'
+      - '*.gradle.kts'
+      - 'gradle.properties'
+      - 'distribution/**'
+      - '.github/workflows/deploy.yml'
+  # 시크릿 등록 직후 수동 검증용
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 시크릿이 아직 없으면 뒤 단계를 조용히 건너뛴다(초기 설정 전 푸시가 실패로 찍히지 않게).
+      - name: 시크릿 확인
+        id: guard
+        env:
+          HAS_SECRETS: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON != '' && secrets.KEYSTORE_BASE64 != '' }}
+        run: |
+          echo "ok=${HAS_SECRETS}" >> "$GITHUB_OUTPUT"
+          if [ "${HAS_SECRETS}" != "true" ]; then
+            echo "::warning::배포 시크릿이 등록되지 않아 업로드를 건너뜁니다."
+          fi
+
+      - uses: actions/setup-java@v4
+        if: steps.guard.outputs.ok == 'true'
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+        if: steps.guard.outputs.ok == 'true'
+
+      # debugSymbolLevel이 NDK의 objcopy를 쓰므로 버전을 고정 설치한다(없으면 조용히 건너뛰어 기호가 빠진다).
+      - name: NDK 설치
+        if: steps.guard.outputs.ok == 'true'
+        run: echo y | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;29.0.14206865" > /dev/null
+
+      - name: 서명 키 복원
+        if: steps.guard.outputs.ok == 'true'
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > release.keystore
+          cat > keystore.properties <<EOF
+          storeFile=release.keystore
+          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
+          keyAlias=${{ secrets.KEY_ALIAS }}
+          keyPassword=${{ secrets.KEY_PASSWORD }}
+          EOF
+
+      # 콘솔에 올라간 코드는 재사용 불가 → 실행 번호로 단조 증가시킨다.
+      # 수동 업로드(마지막 2)와 겹치지 않게 10부터 시작.
+      - name: versionCode 계산
+        if: steps.guard.outputs.ok == 'true'
+        run: echo "VERSION_CODE=$((10 + GITHUB_RUN_NUMBER))" >> "$GITHUB_ENV"
+
+      - name: 테스트 + 서명 번들 빌드
+        if: steps.guard.outputs.ok == 'true'
+        env:
+          ENEZZANG_YATTE_BASE_URL: ${{ secrets.ENEZZANG_YATTE_BASE_URL }}
+        run: ./gradlew :app:testDebugUnitTest :app:bundleRelease
+
+      - name: 내부 테스트 트랙 업로드
+        if: steps.guard.outputs.ok == 'true'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.enezzang.yatte
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: internal
+          status: completed
+          whatsNewDirectory: distribution/whatsnew

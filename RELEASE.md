@@ -107,7 +107,8 @@
 
 ## 9) 발매 후 운영
 
-- [ ] 업데이트 때마다 `app/build.gradle.kts`의 **`versionCode` 증가**(현재 3) + `versionName` 갱신 — versionCode 동일하면 업로드 거부
+- [ ] **앱 배포는 CI로 일원화**: main에 앱 코드 푸시 → 깃허브 액션(`.github/workflows/deploy.yml`)이 테스트→서명 번들→**내부 테스트 트랙** 자동 업로드. versionCode는 CI가 `10 + 실행번호`로 자동 증가시키므로 **수동 업로드를 섞지 말 것**(코드 충돌). 출시 노트는 `distribution/whatsnew/whatsnew-ko-KR` 수정.
+- [ ] 비공개 테스트/프로덕션 승격은 콘솔에서 수동 — 내부 트랙에서 확인된 버전을 "트랙으로 승격"으로 올린다. versionName 갱신은 `app/build.gradle.kts`에서.
 - ℹ️ 콘솔의 **"네이티브 코드 디버그 기호 미업로드" 경고는 없앨 수 없다** — 네이티브는 androidx 프리빌트 .so 둘(graphics-path·DataStore)뿐인데 이미 stripped 상태로 배포돼 올릴 심볼이 존재하지 않는다(llvm-nm으로 확인, 2026-10-29). ndk.debugSymbolLevel=SYMBOL_TABLE 설정은 돼 있으므로 심볼 있는 의존성이 생기면 자동 포함된다. 경고는 출시·심사를 막지 않으니 무시할 것.
 - [ ] 인앱 업데이트 도입 검토: water_fee처럼 **`play-app-update`**(In-App Update API) 적용해 강제/유연 업데이트 지원
 - [ ] 크래시/ANR은 콘솔 Android Vitals에서 모니터링

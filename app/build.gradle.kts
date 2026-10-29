@@ -61,8 +61,13 @@ android {
         // desugaring 없이 java.time·java.util.Base64를 쓸 수 있다. 2026년 기준 26 미만 기기는 무시해도 되는 수준.
         minSdk = 26
         targetSdk = 37
-        // 콘솔에 한 번 올라간 versionCode는 재사용 불가라 업로드마다 올린다 (1: 리네임 전, 2: 기호 없이 업로드됨).
-        versionCode = 3
+        /*
+         * 콘솔에 한 번 올라간 versionCode는 재사용 불가라 업로드마다 올려야 한다.
+         * CI(깃허브 액션)는 실행 번호 기반 코드를 env로 주입하고(10 + run_number),
+         * 로컬 수동 빌드는 아래 기본값을 쓴다. CI 도입 후에는 콘솔 업로드를 CI로 일원화할 것 —
+         * 수동 업로드를 섞으면 코드가 엇갈려 거부된다. (1: 리네임 전, 2: 첫 업로드)
+         */
+        versionCode = providers.environmentVariable("VERSION_CODE").orNull?.toIntOrNull() ?: 3
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
