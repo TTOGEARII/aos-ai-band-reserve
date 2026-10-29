@@ -151,6 +151,20 @@ class EnezzangYatteViewModel @Inject constructor(
         authenticate("회원가입") { repository.register(trimmedEmail, password, trimmedName) }
     }
 
+    /** 카카오 딥링크(yatte://kakao)로 돌아온 인가 코드 처리. 이미 로그인돼 있으면 무시한다. */
+    fun kakaoLogin(code: String) {
+        if (_uiState.value.session != null) return
+        authenticate("카카오 로그인") { repository.kakaoLogin(code) }
+    }
+
+    /** 카카오 인가 취소/실패 딥링크. 로그인 화면의 오류 자리에 안내만 띄운다. */
+    fun kakaoFailed(reason: String?) {
+        if (_uiState.value.session != null) return
+        _uiState.update {
+            it.copy(authError = reason ?: "카카오 인증 응답이 올바르지 않아요. 다시 시도해 주세요.")
+        }
+    }
+
     private fun authenticate(
         label: String,
         call: suspend () -> ApiResult<com.enezzang.yatte.data.AuthResponse>,

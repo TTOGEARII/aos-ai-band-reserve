@@ -12,6 +12,7 @@
 - [x] 암호화 키 호환 확인: 운영 서버가 기본 `ENCRYPTION_KEY`를 사용함을 실제 로그인 호출로 검증 (복호화 성공 → 401 한국어 메시지)
 - [x] 앱 `local.properties` 설정: `enezzangYatte.baseUrl=https://nest.kanenashitogeari.com` (키는 기본값이라 생략)
 - [ ] 발매 전 재확인: 서버 `ENCRYPTION_KEY`를 나중에 커스텀 값으로 바꾸면 **앱도 `enezzangYatte.encryptionKey`를 맞춰 새 버전을 배포**해야 한다 (구버전 앱은 로그인부터 깨짐)
+- [ ] **카카오 로그인 선행**: 카카오 개발자 콘솔(developers.kakao.com > 내 애플리케이션 > 카카오 로그인 > Redirect URI)에 `https://nuxt.kanenashitogeari.com/yatte-kakao-bridge.html` **등록** — 등록 전엔 카카오 버튼에서 KOE006 오류가 난다. CI 시크릿 `ENEZZANG_YATTE_KAKAO_REST_KEY`도 등록(없으면 버튼 숨은 채 배포됨).
 
 ⏱ 예상: 완료됨. 막히기 쉬운 곳: 서버 키 변경 시 앱과의 동기화.
 

@@ -84,6 +84,12 @@ class EnezzangYatteRepository @Inject constructor(private val api: EnezzangYatte
             api.register(encryptedBody(RegisterRequest(email, password, name)))
         }.decrypted()
 
+    /** 브라우저 인가로 받은 코드를 JWT로 교환. redirectUri는 인가 요청과 같은 값([KAKAO_REDIRECT_URI]). */
+    suspend fun kakaoLogin(code: String): ApiResult<AuthResponse> =
+        safeCall("카카오 로그인에 실패했어요.") {
+            api.kakao(encryptedBody(KakaoLoginRequest(code, KAKAO_REDIRECT_URI)))
+        }.decrypted()
+
     suspend fun credentialStatus(token: String): ApiResult<CredentialStatus> =
         safeCall("설정 상태를 불러오지 못했어요.") { api.credentialStatus(bearer(token)) }
 

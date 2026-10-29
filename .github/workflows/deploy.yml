@@ -7,6 +7,7 @@
 #   KEY_ALIAS                  서명 키 alias (enezzangyatte)
 #   KEY_PASSWORD               키 비밀번호 (keystore와 동일)
 #   ENEZZANG_YATTE_BASE_URL    운영 API 주소 (저장소에 주소를 박지 않는 규칙 유지)
+#   ENEZZANG_YATTE_KAKAO_REST_KEY  카카오 로그인 REST 키 (없으면 카카오 버튼이 숨은 채 빌드됨)
 #   PLAY_SERVICE_ACCOUNT_JSON  Play Developer API 서비스 계정 JSON 전문
 name: deploy
 
@@ -75,6 +76,7 @@ jobs:
         if: steps.guard.outputs.ok == 'true'
         env:
           ENEZZANG_YATTE_BASE_URL: ${{ secrets.ENEZZANG_YATTE_BASE_URL }}
+          ENEZZANG_YATTE_KAKAO_REST_KEY: ${{ secrets.ENEZZANG_YATTE_KAKAO_REST_KEY }}
         run: ./gradlew :app:testDebugUnitTest :app:bundleRelease
 
       - name: 내부 테스트 트랙 업로드

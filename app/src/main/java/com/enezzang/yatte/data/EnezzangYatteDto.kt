@@ -22,8 +22,12 @@ data class LoginRequest(val email: String, val password: String)
 @Serializable
 data class RegisterRequest(val email: String, val password: String, val name: String)
 
+/** 카카오 인가 코드 교환. redirectUri는 인가 요청과 정확히 같아야 한다(서버가 토큰 교환에 씀). */
 @Serializable
-data class AuthUser(val idx: Int = 0, val email: String, val name: String = "")
+data class KakaoLoginRequest(val code: String, val redirectUri: String)
+
+@Serializable
+data class AuthUser(val idx: Int = 0, val email: String = "", val name: String = "")
 
 @Serializable
 data class AuthResponse(val accessToken: String, val user: AuthUser)

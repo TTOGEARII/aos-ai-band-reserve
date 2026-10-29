@@ -2,10 +2,14 @@ package com.enezzang.yatte.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -16,12 +20,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.enezzang.yatte.BuildConfig
+import com.enezzang.yatte.data.kakaoAuthorizeUrl
 import com.enezzang.yatte.ui.theme.EnezzangYatteTheme
 
 /**
@@ -128,6 +137,43 @@ fun AuthScreen(
             onClick = submit,
             loading = isAuthenticating,
         )
+
+        // 카카오 로그인 — REST 키가 빌드에 없으면(로컬 미설정 등) 버튼째 숨긴다.
+        if (BuildConfig.KAKAO_REST_KEY.isNotBlank()) {
+            val uriHandler = LocalUriHandler.current
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                Hairline(Modifier.weight(1f))
+                Text(
+                    "또는",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = EnezzangYatteTheme.tokens.muted,
+                )
+                Hairline(Modifier.weight(1f))
+            }
+
+            Button(
+                onClick = { uriHandler.openUri(kakaoAuthorizeUrl(BuildConfig.KAKAO_REST_KEY)) },
+                enabled = !isAuthenticating,
+                shape = MaterialTheme.shapes.large,
+                // 카카오 브랜드 색 — 외부 브랜드색은 토큰 규칙의 예외(일회성 값)
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFEE500),
+                    contentColor = Color(0xFF191919),
+                ),
+                modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp),
+            ) {
+                Text("카카오로 시작하기", style = MaterialTheme.typography.labelLarge)
+            }
+            Text(
+                text = "브라우저에서 카카오 인증을 마치면 앱으로 자동 복귀해요.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = EnezzangYatteTheme.tokens.muted,
+            )
+        }
 
         Text(
             text = "웹(subculture-ground)과 같은 계정을 써요. 이미 가입했다면 그대로 로그인하세요.",

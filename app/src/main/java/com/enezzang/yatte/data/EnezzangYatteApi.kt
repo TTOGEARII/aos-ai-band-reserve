@@ -25,6 +25,9 @@ interface EnezzangYatteApi {
     @POST("auth/register")
     suspend fun register(@Body body: EncryptedBody): Response<EncryptedBody>
 
+    @POST("auth/kakao")
+    suspend fun kakao(@Body body: EncryptedBody): Response<EncryptedBody>
+
     @GET("notion-agent/credentials/status")
     suspend fun credentialStatus(
         @Header("Authorization") bearer: String,

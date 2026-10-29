@@ -42,6 +42,15 @@ val encryptionKey: String =
         ?: localProperties.getProperty("enezzangYatte.encryptionKey")?.takeIf { it.isNotBlank() }
         ?: "subculture-ground-encryption-key-2024"
 
+/**
+ * 카카오 로그인 REST 키(인가 URL의 client_id). 웹도 공개로 싣는 값이라 비밀은 아니지만
+ * 주소처럼 저장소에 박지 않는다. 비어 있으면 앱에서 카카오 버튼이 숨는다.
+ */
+val kakaoRestKey: String =
+    providers.environmentVariable("ENEZZANG_YATTE_KAKAO_REST_KEY").orNull?.takeIf { it.isNotBlank() }
+        ?: localProperties.getProperty("enezzangYatte.kakaoRestKey")?.takeIf { it.isNotBlank() }
+        ?: ""
+
 android {
     namespace = "com.enezzang.yatte"
     compileSdk {
@@ -74,6 +83,7 @@ android {
 
         buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
         buildConfigField("String", "ENCRYPTION_KEY", "\"$encryptionKey\"")
+        buildConfigField("String", "KAKAO_REST_KEY", "\"$kakaoRestKey\"")
     }
 
     signingConfigs {

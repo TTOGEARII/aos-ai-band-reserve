@@ -13,15 +13,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Enezzang_yatte">
+        <!-- singleTask: 카카오 인가 후 브라우저에서 딥링크로 복귀할 때 새 인스턴스를 쌓지 않고 onNewIntent로 받는다 -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.Enezzang_yatte"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- 카카오 로그인 복귀 딥링크. data/KakaoAuth.kt의 상수와 같아야 한다 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="kakao"
+                    android:scheme="yatte" />
             </intent-filter>
         </activity>
     </application>
