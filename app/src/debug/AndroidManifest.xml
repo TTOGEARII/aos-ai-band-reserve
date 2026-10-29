@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  디버그 빌드에서만 평문 HTTP를 허용한다.
+  BASE_URL을 http://10.0.2.2:3001 (에뮬레이터에서 본 로컬 NestJS)로 붙일 때 필요하다.
+  릴리스는 운영 HTTPS만 쓰므로 이 설정이 들어가지 않는다.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application android:usesCleartextTraffic="true" />
+</manifest>

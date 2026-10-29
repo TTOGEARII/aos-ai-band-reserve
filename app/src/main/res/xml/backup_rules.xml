@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+   JWT 토큰이 든 DataStore는 기기 백업에서 제외한다. 복원된 기기에서
+   만료된(또는 다른 사람의) 세션이 살아나는 것보다 다시 로그인하는 쪽이 낫다.
+-->
+<full-backup-content>
+    <exclude
+        domain="file"
+        path="datastore/" />
+</full-backup-content>

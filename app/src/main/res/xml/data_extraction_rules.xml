@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+   API 31+ 백업/전송 규칙. backup_rules.xml과 같은 이유로 DataStore(세션 토큰)를 제외한다.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude
+            domain="file"
+            path="datastore/" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude
+            domain="file"
+            path="datastore/" />
+    </device-transfer>
+</data-extraction-rules>

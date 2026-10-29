@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+   8분음표 두 개를 빔으로 이은 모양. 어댑티브 아이콘 안전영역(중앙 66dp) 안에 그린다.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group>
+        <!-- 왼쪽 음표 머리 -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M44,70 m-6.5,0 a6.5,6.5 0 1,0 13,0 a6.5,6.5 0 1,0 -13,0" />
+        <!-- 왼쪽 기둥 -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M48.6,42 L51.2,42 L51.2,70 L48.6,70 Z" />
+        <!-- 오른쪽 음표 머리 -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M64,66 m-6.5,0 a6.5,6.5 0 1,0 13,0 a6.5,6.5 0 1,0 -13,0" />
+        <!-- 오른쪽 기둥 -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M68.6,38 L71.2,38 L71.2,66 L68.6,66 Z" />
+        <!-- 빔 -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M48.6,42 L71.2,38 L71.2,45.5 L48.6,49.5 Z" />
+    </group>
+</vector>
