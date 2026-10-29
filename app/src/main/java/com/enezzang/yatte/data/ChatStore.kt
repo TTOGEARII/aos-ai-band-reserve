@@ -1,4 +1,4 @@
-package com.kanenashitogeari.bandroom.data
+package com.enezzang.yatte.data
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private val Context.chatDataStore: DataStore<Preferences> by preferencesDataStore(name = "band-room-chat")
+private val Context.chatDataStore: DataStore<Preferences> by preferencesDataStore(name = "enezzang-yatte-chat")
 
 /**
  * 대화기록·선택 모델을 기기에 보존한다. 웹의 localStorage("notion-agent:chat" / "notion-agent:model") 대응 —
@@ -29,7 +29,7 @@ class ChatStore @Inject constructor(
     val messages: Flow<List<StoredMessage>> = context.chatDataStore.data.map { prefs ->
         val raw = prefs[messagesKey] ?: return@map emptyList()
         runCatching {
-            BandRoomNetwork.json.decodeFromString<List<StoredMessage>>(raw)
+            EnezzangYatteNetwork.json.decodeFromString<List<StoredMessage>>(raw)
         }.getOrDefault(emptyList())
     }
 
@@ -37,7 +37,7 @@ class ChatStore @Inject constructor(
 
     suspend fun saveMessages(messages: List<StoredMessage>) {
         context.chatDataStore.edit { prefs ->
-            prefs[messagesKey] = BandRoomNetwork.json.encodeToString(messages)
+            prefs[messagesKey] = EnezzangYatteNetwork.json.encodeToString(messages)
         }
     }
 

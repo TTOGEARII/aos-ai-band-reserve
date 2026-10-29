@@ -1,6 +1,6 @@
-package com.kanenashitogeari.bandroom
+package com.enezzang.yatte
 
-import com.kanenashitogeari.bandroom.data.Crypto
+import com.enezzang.yatte.data.Crypto
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

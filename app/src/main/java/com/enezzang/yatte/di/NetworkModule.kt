@@ -1,7 +1,7 @@
-package com.kanenashitogeari.bandroom.di
+package com.enezzang.yatte.di
 
-import com.kanenashitogeari.bandroom.data.BandRoomApi
-import com.kanenashitogeari.bandroom.data.BandRoomNetwork
+import com.enezzang.yatte.data.EnezzangYatteApi
+import com.enezzang.yatte.data.EnezzangYatteNetwork
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,5 +18,5 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideBandRoomApi(): BandRoomApi = BandRoomNetwork.createApi()
+    fun provideEnezzangYatteApi(): EnezzangYatteApi = EnezzangYatteNetwork.createApi()
 }

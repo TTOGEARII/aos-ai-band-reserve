@@ -1,11 +1,11 @@
-package com.kanenashitogeari.bandroom
+package com.enezzang.yatte
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.kanenashitogeari.bandroom.ui.BandRoomScreen
-import com.kanenashitogeari.bandroom.ui.theme.Band_roomTheme
+import com.enezzang.yatte.ui.EnezzangYatteScreen
+import com.enezzang.yatte.ui.theme.Enezzang_yatteTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -15,8 +15,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Band_roomTheme {
-                BandRoomScreen()
+            Enezzang_yatteTheme {
+                EnezzangYatteScreen()
             }
         }
     }

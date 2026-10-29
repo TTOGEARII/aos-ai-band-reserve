@@ -1,4 +1,4 @@
-package com.kanenashitogeari.bandroom.data
+package com.enezzang.yatte.data
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private val Context.sessionDataStore: DataStore<Preferences> by preferencesDataStore(name = "band-room-session")
+private val Context.sessionDataStore: DataStore<Preferences> by preferencesDataStore(name = "enezzang-yatte-session")
 
 /**
  * 로그인 결과(JWT + 표시용 이름/이메일)를 기기에 남긴다. 웹의 access_token 쿠키(7일)와 같은 역할.

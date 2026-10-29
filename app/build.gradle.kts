@@ -21,13 +21,13 @@ val localProperties = Properties().apply {
 
 /**
  * 백엔드 주소는 저장소에 박아두지 않는다 (water_fee와 같은 방식). 우선순위:
- *   1. 환경변수 BAND_ROOM_BASE_URL   (CI·일회성 빌드)
- *   2. local.properties의 bandRoom.baseUrl
+ *   1. 환경변수 ENEZZANG_YATTE_BASE_URL   (CI·일회성 빌드)
+ *   2. local.properties의 enezzangYatte.baseUrl
  * 둘 다 없으면 에뮬레이터용 로컬 주소. release는 아래 packageRelease 가드에서 막는다.
  */
 val explicitBaseUrl: String? =
-    providers.environmentVariable("BAND_ROOM_BASE_URL").orNull?.takeIf { it.isNotBlank() }
-        ?: localProperties.getProperty("bandRoom.baseUrl")?.takeIf { it.isNotBlank() }
+    providers.environmentVariable("ENEZZANG_YATTE_BASE_URL").orNull?.takeIf { it.isNotBlank() }
+        ?: localProperties.getProperty("enezzangYatte.baseUrl")?.takeIf { it.isNotBlank() }
 
 val baseUrl: String = explicitBaseUrl ?: "http://10.0.2.2:3001"
 
@@ -38,24 +38,24 @@ val baseUrl: String = explicitBaseUrl ?: "http://10.0.2.2:3001"
  * 기본값은 서버가 ENCRYPTION_KEY 없이 떴을 때의 기본 키.
  */
 val encryptionKey: String =
-    providers.environmentVariable("BAND_ROOM_ENCRYPTION_KEY").orNull?.takeIf { it.isNotBlank() }
-        ?: localProperties.getProperty("bandRoom.encryptionKey")?.takeIf { it.isNotBlank() }
+    providers.environmentVariable("ENEZZANG_YATTE_ENCRYPTION_KEY").orNull?.takeIf { it.isNotBlank() }
+        ?: localProperties.getProperty("enezzangYatte.encryptionKey")?.takeIf { it.isNotBlank() }
         ?: "subculture-ground-encryption-key-2024"
 
 android {
-    namespace = "com.kanenashitogeari.bandroom"
+    namespace = "com.enezzang.yatte"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        // 스토어 배포 ID. namespace(코드 패키지)와 의도적으로 다르다 — 배포명만 바꾸고 소스는 안 건드리기 위해.
         applicationId = "com.enezzang.yatte"
         // 26인 이유: 어댑티브 아이콘만으로 런처 아이콘이 끝나고(레거시 mipmap PNG 불필요),
         // desugaring 없이 java.time·java.util.Base64를 쓸 수 있다. 2026년 기준 26 미만 기기는 무시해도 되는 수준.
         minSdk = 26
         targetSdk = 37
-        versionCode = 1
+        // 패키지 리네임 전 번들이 콘솔에 올라갔을 가능성이 있어 1을 건너뛴다(같은 코드 재업로드는 거부됨).
+        versionCode = 2
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -100,9 +100,9 @@ tasks.matching { it.name == "packageRelease" || it.name == "packageReleaseBundle
         check(baseUrlWasProvided) {
             """
             릴리스 빌드에 백엔드 주소가 없습니다. 둘 중 하나로 주세요:
-              BAND_ROOM_BASE_URL=https://... ./gradlew :app:assembleRelease
-              또는 local.properties 에  bandRoom.baseUrl=https://...
-            (운영 서버가 커스텀 ENCRYPTION_KEY를 쓰면 bandRoom.encryptionKey도 함께.)
+              ENEZZANG_YATTE_BASE_URL=https://... ./gradlew :app:assembleRelease
+              또는 local.properties 에  enezzangYatte.baseUrl=https://...
+            (운영 서버가 커스텀 ENCRYPTION_KEY를 쓰면 enezzangYatte.encryptionKey도 함께.)
             """.trimIndent()
         }
     }

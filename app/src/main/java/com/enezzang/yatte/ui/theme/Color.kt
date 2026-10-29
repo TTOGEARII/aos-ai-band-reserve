@@ -1,4 +1,4 @@
-package com.kanenashitogeari.bandroom.ui.theme
+package com.enezzang.yatte.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

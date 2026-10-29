@@ -1,11 +1,11 @@
-package com.kanenashitogeari.bandroom
+package com.enezzang.yatte
 
-import com.kanenashitogeari.bandroom.ui.InlineSpan
-import com.kanenashitogeari.bandroom.ui.LinkKind
-import com.kanenashitogeari.bandroom.ui.ReplyBlock
-import com.kanenashitogeari.bandroom.ui.extractLinkChips
-import com.kanenashitogeari.bandroom.ui.parseInline
-import com.kanenashitogeari.bandroom.ui.parseReply
+import com.enezzang.yatte.ui.InlineSpan
+import com.enezzang.yatte.ui.LinkKind
+import com.enezzang.yatte.ui.ReplyBlock
+import com.enezzang.yatte.ui.extractLinkChips
+import com.enezzang.yatte.ui.parseInline
+import com.enezzang.yatte.ui.parseReply
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test

@@ -1,4 +1,4 @@
-package com.kanenashitogeari.bandroom.data
+package com.enezzang.yatte.data
 
 import retrofit2.Response
 import retrofit2.http.Body
@@ -17,7 +17,7 @@ import retrofit2.http.PUT
  *
  * 토큰은 인터셉터 대신 호출마다 명시한다 — 어떤 호출이 인증이 필요한지 시그니처만 보고 알 수 있게.
  */
-interface BandRoomApi {
+interface EnezzangYatteApi {
 
     @POST("auth/login")
     suspend fun login(@Body body: EncryptedBody): Response<EncryptedBody>

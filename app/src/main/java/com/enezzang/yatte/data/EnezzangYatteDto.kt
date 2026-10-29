@@ -1,4 +1,4 @@
-package com.kanenashitogeari.bandroom.data
+package com.enezzang.yatte.data
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonArray
@@ -39,7 +39,7 @@ data class CredentialStatus(
 
 /**
  * 자격증명 부분 수정. 서버는 **바디에 없는 필드 = 유지, 빈 문자열 = 지우기**로 본다.
- * null 필드가 바디에서 빠지는 근거는 BandRoomNetwork.json의 `explicitNulls = false`다.
+ * null 필드가 바디에서 빠지는 근거는 EnezzangYatteNetwork.json의 `explicitNulls = false`다.
  * [RequestSerializationTest]가 지킨다.
  */
 @Serializable

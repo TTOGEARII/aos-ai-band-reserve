@@ -1,4 +1,4 @@
-package com.kanenashitogeari.bandroom
+package com.enezzang.yatte
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
@@ -8,4 +8,4 @@ import dagger.hilt.android.HiltAndroidApp
  * Application이 직접 들고 있던 저장소/리포지토리 프로퍼티는 전부 제거했다.
  */
 @HiltAndroidApp
-class BandRoomApplication : Application()
+class EnezzangYatteApplication : Application()

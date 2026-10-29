@@ -1,4 +1,4 @@
-package com.kanenashitogeari.bandroom.ui
+package com.enezzang.yatte.ui
 
 /**
  * 에이전트 답변(마크다운 섞인 평문)을 화면 블록으로 푸는 순수 함수들.

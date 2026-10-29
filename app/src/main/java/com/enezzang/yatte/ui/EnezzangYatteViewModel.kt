@@ -1,19 +1,19 @@
-package com.kanenashitogeari.bandroom.ui
+package com.enezzang.yatte.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kanenashitogeari.bandroom.data.AGENT_MODELS
-import com.kanenashitogeari.bandroom.data.ApiResult
-import com.kanenashitogeari.bandroom.data.AuthSession
-import com.kanenashitogeari.bandroom.data.BandRoomRepository
-import com.kanenashitogeari.bandroom.data.ChatStore
-import com.kanenashitogeari.bandroom.data.ChatTurnBody
-import com.kanenashitogeari.bandroom.data.CredentialStatus
-import com.kanenashitogeari.bandroom.data.CredentialsPatch
-import com.kanenashitogeari.bandroom.data.MAX_MESSAGE_LENGTH
-import com.kanenashitogeari.bandroom.data.SessionStore
-import com.kanenashitogeari.bandroom.data.StoredMessage
-import com.kanenashitogeari.bandroom.data.ToolCallTrace
+import com.enezzang.yatte.data.AGENT_MODELS
+import com.enezzang.yatte.data.ApiResult
+import com.enezzang.yatte.data.AuthSession
+import com.enezzang.yatte.data.EnezzangYatteRepository
+import com.enezzang.yatte.data.ChatStore
+import com.enezzang.yatte.data.ChatTurnBody
+import com.enezzang.yatte.data.CredentialStatus
+import com.enezzang.yatte.data.CredentialsPatch
+import com.enezzang.yatte.data.MAX_MESSAGE_LENGTH
+import com.enezzang.yatte.data.SessionStore
+import com.enezzang.yatte.data.StoredMessage
+import com.enezzang.yatte.data.ToolCallTrace
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,7 +45,7 @@ private fun ChatMessage.toStored() = StoredMessage(
     toolCalls = toolCalls,
 )
 
-data class BandRoomUiState(
+data class EnezzangYatteUiState(
     val isBooting: Boolean = true,
     val session: AuthSession? = null,
     val showSettings: Boolean = false,
@@ -83,14 +83,14 @@ data class BandRoomUiState(
 }
 
 @HiltViewModel
-class BandRoomViewModel @Inject constructor(
-    private val repository: BandRoomRepository,
+class EnezzangYatteViewModel @Inject constructor(
+    private val repository: EnezzangYatteRepository,
     private val sessionStore: SessionStore,
     private val chatStore: ChatStore,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(BandRoomUiState())
-    val uiState: StateFlow<BandRoomUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(EnezzangYatteUiState())
+    val uiState: StateFlow<EnezzangYatteUiState> = _uiState.asStateFlow()
 
     private var sendJob: Job? = null
 
@@ -153,7 +153,7 @@ class BandRoomViewModel @Inject constructor(
 
     private fun authenticate(
         label: String,
-        call: suspend () -> ApiResult<com.kanenashitogeari.bandroom.data.AuthResponse>,
+        call: suspend () -> ApiResult<com.enezzang.yatte.data.AuthResponse>,
     ) {
         viewModelScope.launch {
             _uiState.update { it.copy(isAuthenticating = true, authError = null) }
@@ -188,7 +188,7 @@ class BandRoomViewModel @Inject constructor(
             sessionStore.clear()
             chatStore.clearMessages()
             _uiState.update {
-                BandRoomUiState(
+                EnezzangYatteUiState(
                     isBooting = false,
                     model = it.model, // 모델 선택은 계정과 무관한 기기 설정이라 남긴다
                 )

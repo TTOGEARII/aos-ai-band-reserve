@@ -1,4 +1,4 @@
-package com.kanenashitogeari.bandroom.ui
+package com.enezzang.yatte.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -31,15 +31,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kanenashitogeari.bandroom.data.AGENT_MODELS
-import com.kanenashitogeari.bandroom.ui.theme.BandRoomTheme
+import com.enezzang.yatte.data.AGENT_MODELS
+import com.enezzang.yatte.ui.theme.EnezzangYatteTheme
 
 /**
  * 앱의 화면 트리. 세션이 없으면 로그인, 있으면 채팅이 메인이고 설정이 그 위에 얹힌다.
  * 탭이 없는 단일 흐름 — 이 앱이 하는 일이 "에이전트와 대화" 하나이기 때문.
  */
 @Composable
-fun BandRoomScreen(viewModel: BandRoomViewModel = hiltViewModel()) {
+fun EnezzangYatteScreen(viewModel: EnezzangYatteViewModel = hiltViewModel()) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     var confirmNewChat by rememberSaveable { mutableStateOf(false) }
@@ -174,14 +174,14 @@ private fun ChatHeader(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = BandRoomTheme.gutter, end = 4.dp, top = 10.dp, bottom = 10.dp),
+            .padding(start = EnezzangYatteTheme.gutter, end = 4.dp, top = 10.dp, bottom = 10.dp),
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text("합주실 예약 AI", style = MaterialTheme.typography.headlineMedium)
             Text(
                 text = modelLabel,
                 style = MaterialTheme.typography.labelMedium,
-                color = BandRoomTheme.tokens.muted,
+                color = EnezzangYatteTheme.tokens.muted,
             )
         }
         if (hasMessages) {
@@ -201,7 +201,7 @@ private fun SettingsHeader(onBack: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 4.dp, end = BandRoomTheme.gutter, top = 10.dp, bottom = 10.dp),
+            .padding(start = 4.dp, end = EnezzangYatteTheme.gutter, top = 10.dp, bottom = 10.dp),
     ) {
         TextButton(onClick = onBack) {
             Text("← 채팅", style = MaterialTheme.typography.labelLarge)

@@ -10,8 +10,8 @@
 
 - [x] 운영 API 확인: `https://nest.kanenashitogeari.com` 이 subculture-ground 백엔드를 서빙 (GET /events 200, /notion-agent/* 401 확인 — 2026-10-29)
 - [x] 암호화 키 호환 확인: 운영 서버가 기본 `ENCRYPTION_KEY`를 사용함을 실제 로그인 호출로 검증 (복호화 성공 → 401 한국어 메시지)
-- [x] 앱 `local.properties` 설정: `bandRoom.baseUrl=https://nest.kanenashitogeari.com` (키는 기본값이라 생략)
-- [ ] 발매 전 재확인: 서버 `ENCRYPTION_KEY`를 나중에 커스텀 값으로 바꾸면 **앱도 `bandRoom.encryptionKey`를 맞춰 새 버전을 배포**해야 한다 (구버전 앱은 로그인부터 깨짐)
+- [x] 앱 `local.properties` 설정: `enezzangYatte.baseUrl=https://nest.kanenashitogeari.com` (키는 기본값이라 생략)
+- [ ] 발매 전 재확인: 서버 `ENCRYPTION_KEY`를 나중에 커스텀 값으로 바꾸면 **앱도 `enezzangYatte.encryptionKey`를 맞춰 새 버전을 배포**해야 한다 (구버전 앱은 로그인부터 깨짐)
 
 ⏱ 예상: 완료됨. 막히기 쉬운 곳: 서버 키 변경 시 앱과의 동기화.
 
@@ -26,7 +26,7 @@
 
 ## 2) 앱 서명
 
-- [x] upload keystore **생성됨**: 프로젝트 루트 `release.keystore` (alias `bandroom`, RSA 2048)
+- [x] upload keystore **생성됨**: 프로젝트 루트 `release.keystore` (alias `enezzangyatte`, RSA 2048)
 - [ ] keystore 파일과 비밀번호를 **서로 다른 2곳에 백업** (예: 1Password + 외장/클라우드) — 분실 시 업로드 키 재설정 절차가 번거로움
 - [x] 프로젝트에 `keystore.properties` **작성됨**(git 제외) + `app/build.gradle.kts`에 release signingConfig 연결됨
 - [ ] 콘솔에서 **Play App Signing** 사용 선택(기본값) — 앱 서명 키는 Google이 보관, 우리는 업로드 키만 관리
@@ -35,12 +35,12 @@
 
 ## 3) 릴리스 빌드
 
-- [x] `local.properties`의 `bandRoom.baseUrl`이 **운영 주소**(`https://nest.kanenashitogeari.com`)로 설정됨 — 빌드 스크립트에 baseUrl 필수 가드가 있어 비어 있으면 실패함
+- [x] `local.properties`의 `enezzangYatte.baseUrl`이 **운영 주소**(`https://nest.kanenashitogeari.com`)로 설정됨 — 빌드 스크립트에 baseUrl 필수 가드가 있어 비어 있으면 실패함
 - [x] 빌드 완료:
   ```bash
   ./gradlew :app:bundleRelease
   ```
-- [x] 산출물 확인: `app/build/outputs/bundle/release/app-release.aab` → 서명된 발매 번들을 **`dist/bandroom-1.0-release.aab`로 보관** (운영 URL 포함)
+- [x] 산출물 확인: `app/build/outputs/bundle/release/app-release.aab` → 서명된 발매 번들을 **`dist/enezzang-yatte-1.0-release.aab`로 보관** (운영 URL 포함)
 - [ ] (권장) 릴리스 빌드를 실기기에 설치해 로그인→채팅→예약 링크까지 한 번 통과
 
 ⏱ 예상: 30분. 막히기 쉬운 곳: baseUrl이 로컬 IP(`http://<맥 IP>:3001`)로 남아 있는 채 빌드하는 것, 서명 설정 누락으로 unsigned aab가 나오는 것.
@@ -89,7 +89,7 @@
 ## 7) ⚠️ Google Play 생성형 AI 앱 정책
 
 - [x] Google Play는 생성형 AI 앱에 **부적절한 AI 응답을 사용자가 신고할 수 있는 인앱 장치**를 요구함 — 요건 확인
-- [x] 앱에 **구현됨**: 설정 화면의 **'부적절한 AI 응답 신고' 메일 링크**(mailto: cagameku3842@gmail.com, `ui/SettingsScreen.kt`) — 발매 번들(`dist/bandroom-1.0-release.aab`)에 포함됨
+- [x] 앱에 **구현됨**: 설정 화면의 **'부적절한 AI 응답 신고' 메일 링크**(mailto: cagameku3842@gmail.com, `ui/SettingsScreen.kt`) — 발매 번들(`dist/enezzang-yatte-1.0-release.aab`)에 포함됨
 - [x] 개인정보처리방침(5장 "이용자의 권리와 행사 방법")에도 신고 수단 기재됨
 - [ ] 신고 메일 주소를 바꾸면 **개인정보처리방침의 연락처와 같이** 바꿀 것 (`SettingsScreen.kt`의 `REPORT_EMAIL` 주석 참고)
 

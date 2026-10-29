@@ -1,6 +1,6 @@
-package com.kanenashitogeari.bandroom.data
+package com.enezzang.yatte.data
 
-import com.kanenashitogeari.bandroom.BuildConfig
+import com.enezzang.yatte.BuildConfig
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -27,7 +27,7 @@ val AGENT_MODELS = listOf(
 /** 서버 ChatRequestDto의 @MaxLength와 같다. 입력칸에서도 이 값으로 막는다. */
 const val MAX_MESSAGE_LENGTH = 4000
 
-object BandRoomNetwork {
+object EnezzangYatteNetwork {
 
     /**
      * `explicitNulls = false`가 핵심이다. 자격증명 부분 수정([CredentialsPatch])에서
@@ -40,7 +40,7 @@ object BandRoomNetwork {
         coerceInputValues = true
     }
 
-    fun createApi(): BandRoomApi {
+    fun createApi(): EnezzangYatteApi {
         val logging = HttpLoggingInterceptor().apply {
             level = if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor.Level.BODY
@@ -65,12 +65,12 @@ object BandRoomNetwork {
             .client(client)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
-            .create(BandRoomApi::class.java)
+            .create(EnezzangYatteApi::class.java)
     }
 }
 
 @Singleton
-class BandRoomRepository @Inject constructor(private val api: BandRoomApi) {
+class EnezzangYatteRepository @Inject constructor(private val api: EnezzangYatteApi) {
 
     private val encryptionKey = BuildConfig.ENCRYPTION_KEY
 
@@ -113,7 +113,7 @@ class BandRoomRepository @Inject constructor(private val api: BandRoomApi) {
     private fun bearer(token: String) = "Bearer $token"
 
     private inline fun <reified T> encryptedBody(payload: T): EncryptedBody =
-        EncryptedBody(Crypto.encrypt(BandRoomNetwork.json.encodeToString(payload), encryptionKey))
+        EncryptedBody(Crypto.encrypt(EnezzangYatteNetwork.json.encodeToString(payload), encryptionKey))
 
     /**
      * 암호화 응답({encrypted})을 풀어 원하는 타입으로. 여기서 깨지면 십중팔구
@@ -123,7 +123,7 @@ class BandRoomRepository @Inject constructor(private val api: BandRoomApi) {
         when (this) {
             is ApiResult.Success -> try {
                 ApiResult.Success(
-                    BandRoomNetwork.json.decodeFromString<T>(
+                    EnezzangYatteNetwork.json.decodeFromString<T>(
                         Crypto.decrypt(data.encrypted, encryptionKey),
                     ),
                 )
@@ -183,7 +183,7 @@ class BandRoomRepository @Inject constructor(private val api: BandRoomApi) {
     private fun failureOf(response: Response<*>, fallbackMessage: String): ApiResult.Failure {
         val serverMessage = response.errorBody()?.let { errorBody ->
             runCatching {
-                BandRoomNetwork.json.decodeFromString<ApiErrorBody>(errorBody.string()).text
+                EnezzangYatteNetwork.json.decodeFromString<ApiErrorBody>(errorBody.string()).text
             }.getOrNull()
         }
 

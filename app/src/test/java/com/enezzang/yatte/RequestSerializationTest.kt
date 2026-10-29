@@ -1,11 +1,11 @@
-package com.kanenashitogeari.bandroom
+package com.enezzang.yatte
 
-import com.kanenashitogeari.bandroom.data.AuthResponse
-import com.kanenashitogeari.bandroom.data.BandRoomNetwork
-import com.kanenashitogeari.bandroom.data.ChatRequest
-import com.kanenashitogeari.bandroom.data.ChatResponse
-import com.kanenashitogeari.bandroom.data.ChatTurnBody
-import com.kanenashitogeari.bandroom.data.CredentialsPatch
+import com.enezzang.yatte.data.AuthResponse
+import com.enezzang.yatte.data.EnezzangYatteNetwork
+import com.enezzang.yatte.data.ChatRequest
+import com.enezzang.yatte.data.ChatResponse
+import com.enezzang.yatte.data.ChatTurnBody
+import com.enezzang.yatte.data.CredentialsPatch
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -20,7 +20,7 @@ import org.junit.Test
  */
 class RequestSerializationTest {
 
-    private val json = BandRoomNetwork.json
+    private val json = EnezzangYatteNetwork.json
 
     @Test
     fun `자격증명 패치 - 입력한 필드만 바디에 실린다`() {

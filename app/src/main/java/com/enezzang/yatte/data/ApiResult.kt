@@ -1,4 +1,4 @@
-package com.kanenashitogeari.bandroom.data
+package com.enezzang.yatte.data
 
 /**
  * 네트워크 호출 결과. 에러를 삼키지 않도록 실패를 타입으로 남긴다.

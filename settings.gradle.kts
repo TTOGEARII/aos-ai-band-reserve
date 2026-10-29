@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "band_room"
+rootProject.name = "enezzang_yatte"
 include(":app")

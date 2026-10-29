@@ -1,4 +1,4 @@
-package com.kanenashitogeari.bandroom.ui
+package com.enezzang.yatte.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,7 +27,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.kanenashitogeari.bandroom.ui.theme.BandRoomTheme
+import com.enezzang.yatte.ui.theme.EnezzangYatteTheme
 
 /** 목록·섹션 사이의 1px 선. */
 @Composable
@@ -36,7 +36,7 @@ fun Hairline(modifier: Modifier = Modifier) {
         modifier
             .fillMaxWidth()
             .height(1.dp)
-            .background(BandRoomTheme.tokens.hairline),
+            .background(EnezzangYatteTheme.tokens.hairline),
     )
 }
 
@@ -95,7 +95,7 @@ fun LabeledField(
         onValueChange = onValueChange,
         label = { Text(label, style = MaterialTheme.typography.bodyMedium) },
         placeholder = placeholder?.let {
-            { Text(it, style = MaterialTheme.typography.bodyLarge, color = BandRoomTheme.tokens.muted) }
+            { Text(it, style = MaterialTheme.typography.bodyLarge, color = EnezzangYatteTheme.tokens.muted) }
         },
         supportingText = supporting?.let {
             { Text(it, style = MaterialTheme.typography.bodyMedium) }
@@ -111,7 +111,7 @@ fun LabeledField(
         keyboardActions = KeyboardActions(onDone = { onDone?.invoke() }),
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = BandRoomTheme.tokens.hairline,
+            unfocusedBorderColor = EnezzangYatteTheme.tokens.hairline,
         ),
         modifier = modifier
             .fillMaxWidth()
@@ -135,7 +135,7 @@ fun ErrorBanner(
         modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.errorContainer)
-            .padding(horizontal = BandRoomTheme.gutter, vertical = 10.dp),
+            .padding(horizontal = EnezzangYatteTheme.gutter, vertical = 10.dp),
     ) {
         Text(
             text = message,

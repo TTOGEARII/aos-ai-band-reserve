@@ -1,4 +1,4 @@
-package com.kanenashitogeari.bandroom.ui
+package com.enezzang.yatte.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -47,9 +47,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.kanenashitogeari.bandroom.data.MAX_MESSAGE_LENGTH
-import com.kanenashitogeari.bandroom.data.ToolCallTrace
-import com.kanenashitogeari.bandroom.ui.theme.BandRoomTheme
+import com.enezzang.yatte.data.MAX_MESSAGE_LENGTH
+import com.enezzang.yatte.data.ToolCallTrace
+import com.enezzang.yatte.ui.theme.EnezzangYatteTheme
 
 /** 웹 index.vue의 TOOL_LABELS와 같은 표기 — 두 화면을 오가도 같은 말로 보이게. */
 private val TOOL_LABELS = mapOf(
@@ -107,7 +107,7 @@ fun ChatScreen(
                 .weight(1f)
                 .fillMaxWidth(),
             contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                horizontal = BandRoomTheme.gutter,
+                horizontal = EnezzangYatteTheme.gutter,
                 vertical = 12.dp,
             ),
             verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -158,7 +158,7 @@ private fun EmptyChatHero(
     onPickSuggestion: (String) -> Unit,
     onOpenSettings: () -> Unit,
 ) {
-    val tokens = BandRoomTheme.tokens
+    val tokens = EnezzangYatteTheme.tokens
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Spacer(Modifier.height(12.dp))
         Text("오늘 어디서 맞출까요?", style = MaterialTheme.typography.headlineLarge)
@@ -229,7 +229,7 @@ private fun GeminiKeyCard(onOpenSettings: () -> Unit) {
 
 @Composable
 private fun UserBubble(content: String) {
-    val tokens = BandRoomTheme.tokens
+    val tokens = EnezzangYatteTheme.tokens
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
         Text(
             text = content,
@@ -248,7 +248,7 @@ private fun UserBubble(content: String) {
 
 @Composable
 private fun AssistantBubble(message: ChatMessage) {
-    val tokens = BandRoomTheme.tokens
+    val tokens = EnezzangYatteTheme.tokens
     val uriHandler = LocalUriHandler.current
     val blocks = parseReply(message.content)
     val chips = extractLinkChips(message.content)
@@ -336,7 +336,7 @@ private fun AssistantBubble(message: ChatMessage) {
 
 @Composable
 private fun ToolTraceTag(trace: ToolCallTrace) {
-    val tokens = BandRoomTheme.tokens
+    val tokens = EnezzangYatteTheme.tokens
     val color = if (trace.ok) tokens.traceOk else tokens.traceFail
     Text(
         text = (if (trace.ok) "✓ " else "✗ ") + (TOOL_LABELS[trace.tool] ?: trace.tool),
@@ -348,7 +348,7 @@ private fun ToolTraceTag(trace: ToolCallTrace) {
 /** 답변 대기 말풍선. 도구 호출이 겹치면 수십 초 걸릴 수 있어 "기다리는 중"이 보여야 한다. */
 @Composable
 private fun ThinkingBubble() {
-    val tokens = BandRoomTheme.tokens
+    val tokens = EnezzangYatteTheme.tokens
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -377,14 +377,14 @@ private fun InputBar(
     onSend: () -> Unit,
     onCancel: () -> Unit,
 ) {
-    val tokens = BandRoomTheme.tokens
+    val tokens = EnezzangYatteTheme.tokens
     Row(
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .fillMaxWidth()
             .background(tokens.inputBg)
-            .padding(horizontal = BandRoomTheme.gutter, vertical = 10.dp),
+            .padding(horizontal = EnezzangYatteTheme.gutter, vertical = 10.dp),
     ) {
         OutlinedTextField(
             value = value,

@@ -1,4 +1,4 @@
-package com.kanenashitogeari.bandroom.ui.theme
+package com.enezzang.yatte.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -73,7 +73,7 @@ private val DarkColors = darkColorScheme(
  * M3 스킴에 슬롯이 없는 이 앱 고유 값들. 화면 파일이 hex를 직접 들고 있지 않도록 여기로 모은다.
  * 말풍선 색이 이 앱 얼굴이라 색만이 아니라 역할로 토큰을 둔다.
  */
-data class BandRoomTokens(
+data class EnezzangYatteTokens(
     val hairline: Color,
     val muted: Color,
     /** 내(사용자) 말풍선 — 액센트 지면. */
@@ -89,7 +89,7 @@ data class BandRoomTokens(
     val inputBg: Color,
 )
 
-private val LightTokens = BandRoomTokens(
+private val LightTokens = EnezzangYatteTokens(
     hairline = HairlineLight,
     muted = MutedOnLight,
     bubbleUser = Violet700,
@@ -101,7 +101,7 @@ private val LightTokens = BandRoomTokens(
     inputBg = SurfaceLight,
 )
 
-private val DarkTokens = BandRoomTokens(
+private val DarkTokens = EnezzangYatteTokens(
     hairline = HairlineDark,
     muted = MutedOnDark,
     bubbleUser = Violet800,
@@ -113,11 +113,11 @@ private val DarkTokens = BandRoomTokens(
     inputBg = SurfaceDark,
 )
 
-private val LocalBandRoom = staticCompositionLocalOf { LightTokens }
+private val LocalEnezzangYatte = staticCompositionLocalOf { LightTokens }
 
-object BandRoomTheme {
-    val tokens: BandRoomTokens
-        @Composable @ReadOnlyComposable get() = LocalBandRoom.current
+object EnezzangYatteTheme {
+    val tokens: EnezzangYatteTokens
+        @Composable @ReadOnlyComposable get() = LocalEnezzangYatte.current
 
     /** 화면 좌우 여백. */
     val gutter = 16.dp
@@ -128,11 +128,11 @@ object BandRoomTheme {
  * 보라 단일 액센트 위에 세운 말풍선 대비가 무너진다.
  */
 @Composable
-fun Band_roomTheme(
+fun Enezzang_yatteTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    CompositionLocalProvider(LocalBandRoom provides if (darkTheme) DarkTokens else LightTokens) {
+    CompositionLocalProvider(LocalEnezzangYatte provides if (darkTheme) DarkTokens else LightTokens) {
         MaterialTheme(
             colorScheme = if (darkTheme) DarkColors else LightColors,
             typography = Typography,

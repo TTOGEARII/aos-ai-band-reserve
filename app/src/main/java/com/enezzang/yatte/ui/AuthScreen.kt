@@ -1,4 +1,4 @@
-package com.kanenashitogeari.bandroom.ui
+package com.enezzang.yatte.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,7 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.kanenashitogeari.bandroom.ui.theme.BandRoomTheme
+import com.enezzang.yatte.ui.theme.EnezzangYatteTheme
 
 /**
  * 로그인/회원가입. 계정은 subculture-ground 전 프로젝트 공용이라
@@ -51,7 +51,7 @@ fun AuthScreen(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = BandRoomTheme.gutter),
+            .padding(horizontal = EnezzangYatteTheme.gutter),
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         Spacer(Modifier.height(24.dp))
@@ -60,7 +60,7 @@ fun AuthScreen(
         Text(
             text = "말로 물어보면 서울 합주실의 빈 시간을 찾아\n예약 링크까지 바로 받아요.",
             style = MaterialTheme.typography.bodyLarge,
-            color = BandRoomTheme.tokens.muted,
+            color = EnezzangYatteTheme.tokens.muted,
         )
 
         Spacer(Modifier.height(4.dp))
@@ -132,7 +132,7 @@ fun AuthScreen(
         Text(
             text = "웹(subculture-ground)과 같은 계정을 써요. 이미 가입했다면 그대로 로그인하세요.",
             style = MaterialTheme.typography.bodyMedium,
-            color = BandRoomTheme.tokens.muted,
+            color = EnezzangYatteTheme.tokens.muted,
         )
     }
 }

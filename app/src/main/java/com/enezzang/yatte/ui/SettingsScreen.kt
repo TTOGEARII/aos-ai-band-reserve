@@ -1,4 +1,4 @@
-package com.kanenashitogeari.bandroom.ui
+package com.enezzang.yatte.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,10 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.kanenashitogeari.bandroom.data.AGENT_MODELS
-import com.kanenashitogeari.bandroom.data.AuthSession
-import com.kanenashitogeari.bandroom.data.CredentialStatus
-import com.kanenashitogeari.bandroom.ui.theme.BandRoomTheme
+import com.enezzang.yatte.data.AGENT_MODELS
+import com.enezzang.yatte.data.AuthSession
+import com.enezzang.yatte.data.CredentialStatus
+import com.enezzang.yatte.ui.theme.EnezzangYatteTheme
 import java.net.URLEncoder
 
 /**
@@ -61,12 +61,12 @@ fun SettingsScreen(
     var confirmDeleteAll by rememberSaveable { mutableStateOf(false) }
     var confirmSignOut by rememberSaveable { mutableStateOf(false) }
 
-    val tokens = BandRoomTheme.tokens
+    val tokens = EnezzangYatteTheme.tokens
 
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = BandRoomTheme.gutter),
+            .padding(horizontal = EnezzangYatteTheme.gutter),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         Spacer(Modifier.height(4.dp))
@@ -278,7 +278,7 @@ private fun KeyField(
     enabled: Boolean,
     onClear: () -> Unit,
 ) {
-    val tokens = BandRoomTheme.tokens
+    val tokens = EnezzangYatteTheme.tokens
     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
