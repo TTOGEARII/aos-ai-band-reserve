@@ -76,7 +76,7 @@ android {
          * 로컬 수동 빌드는 아래 기본값을 쓴다. CI 도입 후에는 콘솔 업로드를 CI로 일원화할 것 —
          * 수동 업로드를 섞으면 코드가 엇갈려 거부된다. (1: 리네임 전, 2: 첫 업로드, 3: 기호 설정판 업로드됨)
          */
-        versionCode = providers.environmentVariable("VERSION_CODE").orNull?.toIntOrNull() ?: 5
+        versionCode = providers.environmentVariable("VERSION_CODE").orNull?.toIntOrNull() ?: 6
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -161,6 +161,11 @@ dependencies {
     implementation(libs.okhttp)
     // 로깅 인터셉터는 코드에서 BuildConfig.DEBUG로 껐다 켜므로 릴리스에서도 컴파일 경로에 있어야 한다.
     implementation(libs.okhttp.logging.interceptor)
+    // Play 인앱 업데이트. Play로 설치된 기기에서만 동작하고, 그 외에는 조용히 건너뛴다.
+    implementation(libs.play.app.update.ktx)
+    // 이 앱은 Fragment를 안 쓴다. Play Core가 딸려 보내는 1.1.0이 ActivityResult API와
+    // 맞지 않아 lintVitalRelease가 막으므로 버전만 끌어올린다.
+    implementation(libs.androidx.fragment)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(platform(libs.androidx.compose.bom))

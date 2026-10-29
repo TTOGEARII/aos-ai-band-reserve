@@ -15,6 +15,9 @@ okhttp = "4.12.0"
 datastore = "1.1.1"
 hilt = "2.60.1"
 hiltNavigationCompose = "1.4.0"
+playAppUpdate = "2.1.0"
+# Play Core가 끌고 오는 fragment 1.1.0이 ActivityResult API와 안 맞아 린트가 막는다. 올리기만 한다. (water_fee와 동일)
+fragment = "1.9.0"
 # KSP는 Kotlin 버전(2.2.10)과 앞자리가 맞아야 한다 — Kotlin을 올리면 같이 올릴 것.
 ksp = "2.2.10-2.0.2"
 
@@ -36,7 +39,9 @@ androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+play-app-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "playAppUpdate" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
