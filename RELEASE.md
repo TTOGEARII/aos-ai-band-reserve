@@ -107,7 +107,8 @@
 
 ## 9) 발매 후 운영
 
-- [ ] 업데이트 때마다 `app/build.gradle.kts`의 **`versionCode` 증가**(현재 1) + `versionName` 갱신 — versionCode 동일하면 업로드 거부
+- [ ] 업데이트 때마다 `app/build.gradle.kts`의 **`versionCode` 증가**(현재 3) + `versionName` 갱신 — versionCode 동일하면 업로드 거부
+- ℹ️ 콘솔의 **"네이티브 코드 디버그 기호 미업로드" 경고는 없앨 수 없다** — 네이티브는 androidx 프리빌트 .so 둘(graphics-path·DataStore)뿐인데 이미 stripped 상태로 배포돼 올릴 심볼이 존재하지 않는다(llvm-nm으로 확인, 2026-10-29). ndk.debugSymbolLevel=SYMBOL_TABLE 설정은 돼 있으므로 심볼 있는 의존성이 생기면 자동 포함된다. 경고는 출시·심사를 막지 않으니 무시할 것.
 - [ ] 인앱 업데이트 도입 검토: water_fee처럼 **`play-app-update`**(In-App Update API) 적용해 강제/유연 업데이트 지원
 - [ ] 크래시/ANR은 콘솔 Android Vitals에서 모니터링
 - [ ] 백엔드 도메인(`nest.kanenashitogeari.com`) 변경·서버 이전 시 구버전 앱 호환 기간 고려

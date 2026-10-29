@@ -48,14 +48,21 @@ android {
         version = release(37)
     }
 
+    /*
+     * 우리 코드엔 네이티브가 없지만 androidx.graphics.path와 DataStore가 .so를 들고 온다.
+     * 아래 debugSymbolLevel로 기호를 뽑을 때 AGP가 NDK의 objcopy를 쓰므로 설치된 버전을 명시한다 —
+     * 안 적으면 AGP 기본값을 찾다가 없으면 조용히 건너뛰고 Play에 기호가 안 올라간다. (water_fee와 동일)
+     */
+    ndkVersion = "29.0.14206865"
+
     defaultConfig {
         applicationId = "com.enezzang.yatte"
         // 26인 이유: 어댑티브 아이콘만으로 런처 아이콘이 끝나고(레거시 mipmap PNG 불필요),
         // desugaring 없이 java.time·java.util.Base64를 쓸 수 있다. 2026년 기준 26 미만 기기는 무시해도 되는 수준.
         minSdk = 26
         targetSdk = 37
-        // 패키지 리네임 전 번들이 콘솔에 올라갔을 가능성이 있어 1을 건너뛴다(같은 코드 재업로드는 거부됨).
-        versionCode = 2
+        // 콘솔에 한 번 올라간 versionCode는 재사용 불가라 업로드마다 올린다 (1: 리네임 전, 2: 기호 없이 업로드됨).
+        versionCode = 3
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -81,6 +88,15 @@ android {
                 enable = true
             }
             signingConfig = signingConfigs.findByName("release")
+
+            /*
+             * 네이티브 디버그 기호를 번들에 같이 넣는다 — 없으면 Play Console이 경고하고,
+             * 비정상 종료·ANR 스택이 주소 숫자로만 남는다. 남의 프리빌트 .so라 소스가 없으니
+             * 함수 이름까지 풀어 주는 SYMBOL_TABLE이면 충분하다(FULL은 번들만 커진다).
+             */
+            ndk {
+                debugSymbolLevel = "SYMBOL_TABLE"
+            }
         }
     }
     compileOptions {
