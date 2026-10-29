@@ -1,6 +1,6 @@
 # 플레이스토어 첫 발매 체크리스트 — 합주실 예약 AI
 
-> 앱: "합주실 예약 AI" (기기 아이콘 라벨 "합주실 예약"), 패키지 `com.kanenashitogeari.bandroom`
+> 앱: "합주실 예약 AI" (기기 아이콘 라벨 "합주실 예약"), 패키지 `com.enezzang.yatte`
 > 백엔드: **기존 subculture-ground 백엔드를 그대로 사용** — `https://nest.kanenashitogeari.com` (이미 운영 중, Jenkins 자동 배포).
 > 개발자 연락 이메일: cagameku3842@gmail.com (변경 가능)
 

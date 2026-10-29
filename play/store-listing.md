@@ -1,6 +1,6 @@
 # 플레이스토어 등록 문구 — 합주실 예약 AI
 
-- 패키지: `com.kanenashitogeari.bandroom`
+- 패키지: `com.enezzang.yatte`
 - 기기 아이콘 라벨: "합주실 예약"
 - 백엔드: 기존 subculture-ground 백엔드(`nest.kanenashitogeari.com`)를 그대로 사용 (이미 운영 중).
 - 연락 이메일: cagameku3842@gmail.com (변경 가능)

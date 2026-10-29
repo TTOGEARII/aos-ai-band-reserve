@@ -49,7 +49,8 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.kanenashitogeari.bandroom"
+        // 스토어 배포 ID. namespace(코드 패키지)와 의도적으로 다르다 — 배포명만 바꾸고 소스는 안 건드리기 위해.
+        applicationId = "com.enezzang.yatte"
         // 26인 이유: 어댑티브 아이콘만으로 런처 아이콘이 끝나고(레거시 mipmap PNG 불필요),
         // desugaring 없이 java.time·java.util.Base64를 쓸 수 있다. 2026년 기준 26 미만 기기는 무시해도 되는 수준.
         minSdk = 26
