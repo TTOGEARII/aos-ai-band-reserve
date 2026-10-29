@@ -133,7 +133,7 @@ class EnezzangYatteViewModel @Inject constructor(
         authenticate("로그인") { repository.login(trimmedEmail, password) }
     }
 
-    fun register(email: String, password: String, name: String) {
+    fun register(email: String, password: String, passwordConfirm: String, name: String) {
         val trimmedEmail = email.trim()
         val trimmedName = name.trim()
         if (!trimmedEmail.contains("@")) {
@@ -142,6 +142,11 @@ class EnezzangYatteViewModel @Inject constructor(
         }
         if (password.length < 6) {
             _uiState.update { it.copy(authError = "비밀번호는 6자 이상이어야 합니다.") }
+            return
+        }
+        // 비밀번호는 가려진 채 입력되므로 오타를 서버가 아니라 여기서 잡는다 — 재입력 확인.
+        if (password != passwordConfirm) {
+            _uiState.update { it.copy(authError = "비밀번호가 서로 달라요. 같은 값을 두 번 입력해 주세요.") }
             return
         }
         if (trimmedName.isEmpty()) {

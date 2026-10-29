@@ -42,19 +42,24 @@ fun AuthScreen(
     isAuthenticating: Boolean,
     errorMessage: String?,
     onLogin: (email: String, password: String) -> Unit,
-    onRegister: (email: String, password: String, name: String) -> Unit,
+    onRegister: (email: String, password: String, passwordConfirm: String, name: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     // 화면 회전에도 입력이 날아가지 않게 rememberSaveable.
     var isRegister by rememberSaveable { mutableStateOf(false) }
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
+    var passwordConfirm by rememberSaveable { mutableStateOf("") }
     var name by rememberSaveable { mutableStateOf("") }
     val keyboard = LocalSoftwareKeyboardController.current
 
     val submit = {
         keyboard?.hide()
-        if (isRegister) onRegister(email, password, name) else onLogin(email, password)
+        if (isRegister) {
+            onRegister(email, password, passwordConfirm, name)
+        } else {
+            onLogin(email, password)
+        }
     }
 
     Column(
@@ -108,6 +113,14 @@ fun AuthScreen(
         )
 
         if (isRegister) {
+            LabeledField(
+                value = passwordConfirm,
+                onValueChange = { passwordConfirm = it },
+                label = "비밀번호 확인",
+                supporting = "같은 비밀번호를 한 번 더 입력해 주세요",
+                isPassword = true,
+                enabled = !isAuthenticating,
+            )
             LabeledField(
                 value = name,
                 onValueChange = { name = it },
