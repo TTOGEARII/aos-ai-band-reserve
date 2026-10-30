@@ -21,17 +21,20 @@ RTAIL = [('M', (65, 34)), ('Q', (80, 21), (85.5, 35)), ('Q', (87.5, 54), (77, 77
 EYE_R = 1.15
 EYE_SEGS = [((46.8, 44.0), (50.2, 46.4)), ((46.8, 48.8), (50.2, 46.4)),
             ((61.2, 44.0), (57.8, 46.4)), ((61.2, 48.8), (57.8, 46.4))]
-DEV_R = 1.3
-def _cluster(cx, cy):
+def _lump(anchor_deg):
     hx, hy = HEAD[0], HEAD[1]
-    d = math.hypot(cx - hx, cy - hy)
-    u = ((cx - hx) / d, (cy - hy) / d); tv = (-u[1], u[0])
-    segs = []
-    for off, Lin, Lout in ((-2.9, 2.2, 1.4), (0, 3.0, 2.2), (2.9, 2.2, 1.4)):
-        c = (cx + off * tv[0], cy + off * tv[1])
-        segs.append(((c[0] - Lin * u[0], c[1] - Lin * u[1]), (c[0] + Lout * u[0], c[1] + Lout * u[1])))
-    return segs
-DEV_SEGS = _cluster(64.2, 56.4) + _cluster(43.8, 56.4)
+    a = math.radians(anchor_deg)
+    u = (math.cos(a), math.sin(a)); tv = (-u[1], u[0])
+    circles = []
+    for toff, Rb, r in ((-3.1, 13.4, 2.0), (0, 12.0, 2.8), (3.1, 13.4, 2.0)):
+        c = (hx + Rb * u[0] + toff * tv[0], hy + Rb * u[1] + toff * tv[1])
+        circles.append((c[0], c[1], r))
+    quad = [(hx + 13.2 * u[0] - 4.4 * tv[0], hy + 13.2 * u[1] - 4.4 * tv[1]),
+            (hx + 13.2 * u[0] + 4.4 * tv[0], hy + 13.2 * u[1] + 4.4 * tv[1]),
+            (hx + 19.0 * u[0] + 4.9 * tv[0], hy + 19.0 * u[1] + 4.9 * tv[1]),
+            (hx + 19.0 * u[0] - 4.9 * tv[0], hy + 19.0 * u[1] - 4.9 * tv[1])]
+    return circles, quad
+DEV_LUMPS = [_lump(38), _lump(142)]
 
 
 def qbez(p0, p1, p2, n=28):
@@ -69,8 +72,11 @@ def draw_motif(dr, ox, oy, scale):
             dr.ellipse([p[0] - cr, p[1] - cr, p[0] + cr, p[1] + cr], fill=NAVY)
     for a, b in EYE_SEGS:
         seg(a, b, EYE_R)
-    for a, b in DEV_SEGS:
-        seg(a, b, DEV_R)
+    for circles, quad in DEV_LUMPS:
+        dr.polygon([T(p) for p in quad], fill=NAVY)
+        for ccx, ccy, cr2 in circles:
+            c = T((ccx, ccy)); rr2 = cr2 * scale
+            dr.ellipse([c[0] - rr2, c[1] - rr2, c[0] + rr2, c[1] + rr2], fill=NAVY)
 
 
 def make_icon():
