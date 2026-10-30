@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-   에네 콘셉트의 단색 트윈테일 실루엣 — 머리(원)+아호게+양갈래 스우시, 볼에는 기계 단자 슬릿.
+   에네 콘셉트의 단색 캐릭터 마크 — 트윈테일 실루엣에 눈(점 2)과 양볼의 기계 장식 슬릿.
    원작 아트를 트레이싱하지 않은 독자 기하 도형(IP 안전). 어댑티브 안전영역(중앙 66dp) 안에 그린다.
+   좌표는 play/make-graphics.py와 공유 — 모티프를 바꾸면 두 곳을 같이 바꿀 것.
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
@@ -24,5 +25,14 @@
         android:pathData="M38.5,48 A15.5,15.5 0 1,0 69.5,48 A15.5,15.5 0 1,0 38.5,48 Z" />
     <path
         android:fillColor="#FF0A141F"
-        android:pathData="M54.77,53.65 L60.20,57.04 A1.35,1.35 0 0,0 61.63,54.75 L56.20,51.36 A1.35,1.35 0 0,0 54.77,53.65 Z" />
+        android:pathData="M47.3,47.0 A1.7,1.7 0 1,0 50.7,47.0 A1.7,1.7 0 1,0 47.3,47.0 Z" />
+    <path
+        android:fillColor="#FF0A141F"
+        android:pathData="M57.3,47.0 A1.7,1.7 0 1,0 60.7,47.0 A1.7,1.7 0 1,0 57.3,47.0 Z" />
+    <path
+        android:fillColor="#FF0A141F"
+        android:pathData="M43.64,53.25 L48.39,56.22 A1.1,1.1 0 0,0 49.56,54.35 L44.81,51.38 A1.1,1.1 0 0,0 43.64,53.25 Z" />
+    <path
+        android:fillColor="#FF0A141F"
+        android:pathData="M58.44,53.25 L63.19,56.22 A1.1,1.1 0 0,0 64.36,54.35 L59.61,51.38 A1.1,1.1 0 0,0 58.44,53.25 Z" />
 </vector>

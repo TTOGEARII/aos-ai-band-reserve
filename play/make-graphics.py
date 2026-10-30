@@ -18,7 +18,8 @@ HALO_R = 18.5
 AHOGE = [('M', (50.5, 34)), ('Q', (45, 23), (57, 20)), ('Q', (52, 27), (55.5, 33.5)), ('Q', (52.5, 34.5), (50.5, 34))]
 LTAIL = [('M', (43, 34)), ('Q', (28, 21), (22.5, 35)), ('Q', (20.5, 54), (31, 76)), ('Q', (32.5, 60), (38, 50)), ('Q', (42.5, 44), (43, 38))]
 RTAIL = [('M', (65, 34)), ('Q', (80, 21), (85.5, 35)), ('Q', (87.5, 54), (77, 77)), ('Q', (75.5, 60), (70, 50)), ('Q', (65.5, 44), (65, 38))]
-CHEEK = dict(cx=58.2, cy=54.2, th=-32, L=3.2, r=1.35)
+EYES = [(49.0, 47.0, 1.7), (59.0, 47.0, 1.7)]
+CHEEKS = [dict(cx=46.6, cy=53.8, th=-32, L=2.8, r=1.1), dict(cx=61.4, cy=53.8, th=-32, L=2.8, r=1.1)]
 
 
 def qbez(p0, p1, p2, n=28):
@@ -49,14 +50,17 @@ def draw_motif(dr, ox, oy, scale):
     dr.polygon([T(p) for p in poly(AHOGE)], fill=CYAN)
     rr = r * scale
     dr.ellipse([hc[0] - rr, hc[1] - rr, hc[0] + rr, hc[1] + rr], fill=CYAN)
-    c = CHEEK
-    t = math.radians(c['th']); ux, uy = math.cos(t), -math.sin(t)
-    a = T((c['cx'] + c['L'] * ux, c['cy'] + c['L'] * uy))
-    b = T((c['cx'] - c['L'] * ux, c['cy'] - c['L'] * uy))
-    cr = c['r'] * scale
-    dr.line([a, b], fill=NAVY, width=int(2 * cr))
-    for p in (a, b):
-        dr.ellipse([p[0] - cr, p[1] - cr, p[0] + cr, p[1] + cr], fill=NAVY)
+    for ex, ey, er in EYES:
+        ec = T((ex, ey)); err = er * scale
+        dr.ellipse([ec[0] - err, ec[1] - err, ec[0] + err, ec[1] + err], fill=NAVY)
+    for c in CHEEKS:
+        t = math.radians(c['th']); ux, uy = math.cos(t), -math.sin(t)
+        a = T((c['cx'] + c['L'] * ux, c['cy'] + c['L'] * uy))
+        b = T((c['cx'] - c['L'] * ux, c['cy'] - c['L'] * uy))
+        cr = c['r'] * scale
+        dr.line([a, b], fill=NAVY, width=int(2 * cr))
+        for p in (a, b):
+            dr.ellipse([p[0] - cr, p[1] - cr, p[0] + cr, p[1] + cr], fill=NAVY)
 
 
 def make_icon():
