@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""플레이스토어 그래픽 재생성 — 에네 콘셉트 단색 트윈테일 실루엣.
+"""플레이스토어 그래픽 재생성 — 에네 콘셉트 단색 캐릭터 마크.
 
 런처 벡터(app/src/main/res/drawable/ic_launcher_foreground.xml)와 같은 지오메트리를
 여기서도 그린다(108 뷰포트 좌표 공유). 모티프를 바꾸면 두 곳을 같이 바꿀 것.
@@ -12,7 +12,6 @@ NAVY = '#0A141F'
 NAVY2 = '#071019'
 CYAN = '#53D1FF'
 
-# ── 런처 벡터와 공유하는 지오메트리 (108 뷰포트) ──
 HEAD = (54, 48, 15.5)
 HALO_R = 18.5
 AHOGE = [('M', (50.5, 34)), ('Q', (45, 23), (57, 20)), ('Q', (52, 27), (55.5, 33.5)), ('Q', (52.5, 34.5), (50.5, 34))]
@@ -21,21 +20,11 @@ RTAIL = [('M', (65, 34)), ('Q', (80, 21), (85.5, 35)), ('Q', (87.5, 54), (77, 77
 EYE_R = 1.15
 EYE_SEGS = [((46.8, 44.0), (50.2, 46.4)), ((46.8, 48.8), (50.2, 46.4)),
             ((61.2, 44.0), (57.8, 46.4)), ((61.2, 48.8), (57.8, 46.4))]
-def _lump(anchor_deg):
-    hx, hy = HEAD[0], HEAD[1]
-    circles = []
-    for dd, Rb, r in ((-22, 14.3, 1.3), (-11, 13.8, 1.6), (0, 13.3, 2.0), (11, 13.8, 1.6), (22, 14.3, 1.3)):
-        a = math.radians(anchor_deg + dd)
-        circles.append((hx + Rb * math.cos(a), hy + Rb * math.sin(a), r))
-    band = []
-    for dd in range(-26, 27, 4):
-        a = math.radians(anchor_deg + dd)
-        band.append((hx + 14.4 * math.cos(a), hy + 14.4 * math.sin(a)))
-    for dd in range(26, -27, -4):
-        a = math.radians(anchor_deg + dd)
-        band.append((hx + 19.0 * math.cos(a), hy + 19.0 * math.sin(a)))
-    return circles, band
-DEV_LUMPS = [_lump(38), _lump(142)]
+BAR_W = 2.4; BAR_RAD = 1.0
+R_BARS = [(60.8, 53.5, 62.5), (63.3, 49.5, 60.5), (65.4, 52.0, 57.8)]
+L_BARS = [(47.2, 53.5, 62.5), (44.7, 49.5, 60.5), (42.6, 52.0, 57.8)]
+BAND_RMID = 14.2; BAND_HALF = 1.4; BAND_A0 = 192; BAND_A1 = 348
+CUPS = [(38.4, 47.5), (69.6, 47.5)]; CUP_W = 4.4; CUP_H = 9.4; CUP_RAD = 2.0
 
 
 def qbez(p0, p1, p2, n=28):
@@ -55,17 +44,26 @@ def poly(cmds):
 
 
 def draw_motif(dr, ox, oy, scale):
-    """(ox,oy) 기준 108 뷰포트 지오메트리를 scale 배로 그린다."""
     T = lambda p: (ox + p[0] * scale, oy + p[1] * scale)
     for sh in (LTAIL, RTAIL):
         dr.polygon([T(p) for p in poly(sh)], fill=CYAN)
     cx, cy, r = HEAD
-    hr = HALO_R * scale
-    hc = T((cx, cy))
+    hc = T((cx, cy)); hr = HALO_R * scale
     dr.ellipse([hc[0] - hr, hc[1] - hr, hc[0] + hr, hc[1] + hr], fill=NAVY)
-    dr.polygon([T(p) for p in poly(AHOGE)], fill=CYAN)
     rr = r * scale
     dr.ellipse([hc[0] - rr, hc[1] - rr, hc[0] + rr, hc[1] + rr], fill=CYAN)
+    for ccx, ccy in CUPS:
+        p0 = T((ccx - CUP_W / 2, ccy - CUP_H / 2)); p1 = T((ccx + CUP_W / 2, ccy + CUP_H / 2))
+        dr.rounded_rectangle([p0[0], p0[1], p1[0], p1[1]], radius=CUP_RAD * scale, fill=CYAN)
+    band = []
+    for dd in range(BAND_A0, BAND_A1 + 1, 4):
+        a = math.radians(dd)
+        band.append(T((cx + (BAND_RMID + BAND_HALF) * math.cos(a), cy + (BAND_RMID + BAND_HALF) * math.sin(a))))
+    for dd in range(BAND_A1, BAND_A0 - 1, -4):
+        a = math.radians(dd)
+        band.append(T((cx + (BAND_RMID - BAND_HALF) * math.cos(a), cy + (BAND_RMID - BAND_HALF) * math.sin(a))))
+    dr.polygon(band, fill=NAVY)
+    dr.polygon([T(p) for p in poly(AHOGE)], fill=CYAN)
     def seg(a, b, r2):
         A, B = T(a), T(b); cr = r2 * scale
         dr.line([A, B], fill=NAVY, width=int(2 * cr))
@@ -73,11 +71,10 @@ def draw_motif(dr, ox, oy, scale):
             dr.ellipse([p[0] - cr, p[1] - cr, p[0] + cr, p[1] + cr], fill=NAVY)
     for a, b in EYE_SEGS:
         seg(a, b, EYE_R)
-    for circles, quad in DEV_LUMPS:
-        dr.polygon([T(p) for p in quad], fill=NAVY)
-        for ccx, ccy, cr2 in circles:
-            c = T((ccx, ccy)); rr2 = cr2 * scale
-            dr.ellipse([c[0] - rr2, c[1] - rr2, c[0] + rr2, c[1] + rr2], fill=NAVY)
+    for bars in (R_BARS, L_BARS):
+        for bx, ty, by in bars:
+            p0 = T((bx - BAR_W / 2, ty)); p1 = T((bx + BAR_W / 2, by))
+            dr.rounded_rectangle([p0[0], p0[1], p1[0], p1[1]], radius=BAR_RAD * scale, fill=NAVY)
 
 
 def make_icon():
@@ -103,17 +100,14 @@ def make_feature():
     W, H, SS = 1024, 500, 2
     img = Image.new('RGB', (W * SS, H * SS), NAVY)
     dr = ImageDraw.Draw(img)
-    # 좌→우 미세 그라데이션
     c1 = tuple(int(NAVY[i:i + 2], 16) for i in (1, 3, 5))
     c2 = tuple(int(NAVY2[i:i + 2], 16) for i in (1, 3, 5))
     for x in range(W * SS):
         t = x / (W * SS)
         col = tuple(int(c1[k] + (c2[k] - c1[k]) * t) for k in range(3))
         dr.line([(x, 0), (x, H * SS)], fill=col)
-    # 우측 대형 모티프 (세로 높이의 ~86%)
     scale = H * SS * 0.86 / 108
     draw_motif(dr, W * SS - 108 * scale - 60 * SS, (H * SS - 108 * scale) / 2, scale)
-    # 좌측 텍스트
     title = korean_font(86 * SS)
     sub = korean_font(34 * SS)
     dr.text((64 * SS, 160 * SS), '합주실 예약 AI', font=title, fill='#FFFFFF')
