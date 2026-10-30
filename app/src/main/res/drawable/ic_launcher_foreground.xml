@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-   에네 콘셉트의 단색 캐릭터 마크 — 트윈테일 + 아호게 + >< 눈 + 턱 가장자리 양쪽의 울퉁불퉁한 혹 3개 장식(가운데가 가장 높음).
-   장식 형태는 사용자 스케치(icon-512.png) 기준. 원작 아트 트레이싱 아님(IP 안전).
+   에네 콘셉트의 단색 캐릭터 마크 — 트윈테일 + 아호게 + >< 눈 + 턱 가장자리 양쪽의 얇은 혹 3개 장식(가운데가 가장 높음).
+   장식 형태는 사용자 스케치 기준, 두께는 피드백으로 축소. 원작 아트 트레이싱 아님(IP 안전).
    좌표는 play/make-graphics.py와 공유 — 모티프를 바꾸면 두 곳을 같이 바꿀 것.
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
@@ -37,26 +37,26 @@
         android:pathData="M61.86,47.86 L58.46,45.46 A1.15,1.15 0 0,0 57.14,47.34 L60.54,49.74 A1.15,1.15 0 0,0 61.86,47.86 Z" />
     <path
         android:fillColor="#FF0A141F"
-        android:pathData="M67.11,52.66 L61.69,59.59 L65.96,63.56 L71.99,55.84 Z" />
+        android:pathData="M67.75,53.79 L62.95,59.94 L66.32,63.09 L71.62,56.31 Z" />
     <path
         android:fillColor="#FF0A141F"
-        android:pathData="M64.47,53.81 A2.0,2.0 0 1,0 68.47,53.81 A2.0,2.0 0 1,0 64.47,53.81 Z" />
+        android:pathData="M65.27,54.55 A1.5,1.5 0 1,0 68.27,54.55 A1.5,1.5 0 1,0 65.27,54.55 Z" />
     <path
         android:fillColor="#FF0A141F"
-        android:pathData="M60.66,55.39 A2.8,2.8 0 1,0 66.26,55.39 A2.8,2.8 0 1,0 60.66,55.39 Z" />
+        android:pathData="M62.48,56.19 A2.0,2.0 0 1,0 66.48,56.19 A2.0,2.0 0 1,0 62.48,56.19 Z" />
     <path
         android:fillColor="#FF0A141F"
-        android:pathData="M60.65,58.69 A2.0,2.0 0 1,0 64.65,58.69 A2.0,2.0 0 1,0 60.65,58.69 Z" />
+        android:pathData="M61.95,58.81 A1.5,1.5 0 1,0 64.95,58.81 A1.5,1.5 0 1,0 61.95,58.81 Z" />
     <path
         android:fillColor="#FF0A141F"
-        android:pathData="M46.31,59.59 L40.89,52.66 L36.01,55.84 L42.04,63.56 Z" />
+        android:pathData="M45.05,59.94 L40.25,53.79 L36.38,56.31 L41.68,63.09 Z" />
     <path
         android:fillColor="#FF0A141F"
-        android:pathData="M43.35,58.69 A2.0,2.0 0 1,0 47.35,58.69 A2.0,2.0 0 1,0 43.35,58.69 Z" />
+        android:pathData="M43.05,58.81 A1.5,1.5 0 1,0 46.05,58.81 A1.5,1.5 0 1,0 43.05,58.81 Z" />
     <path
         android:fillColor="#FF0A141F"
-        android:pathData="M41.74,55.39 A2.8,2.8 0 1,0 47.34,55.39 A2.8,2.8 0 1,0 41.74,55.39 Z" />
+        android:pathData="M41.52,56.19 A2.0,2.0 0 1,0 45.52,56.19 A2.0,2.0 0 1,0 41.52,56.19 Z" />
     <path
         android:fillColor="#FF0A141F"
-        android:pathData="M39.53,53.81 A2.0,2.0 0 1,0 43.53,53.81 A2.0,2.0 0 1,0 39.53,53.81 Z" />
+        android:pathData="M39.73,54.55 A1.5,1.5 0 1,0 42.73,54.55 A1.5,1.5 0 1,0 39.73,54.55 Z" />
 </vector>
