@@ -1,115 +1,85 @@
 #!/usr/bin/env python3
-"""플레이스토어 그래픽 재생성 — 에네 콘셉트 단색 캐릭터 마크.
+"""플레이스토어·런처 그래픽 생성 — 사용자 제작 캐릭터 아트(source-icon.png) 기반.
 
-런처 벡터(app/src/main/res/drawable/ic_launcher_foreground.xml)와 같은 지오메트리를
-여기서도 그린다(108 뷰포트 좌표 공유). 모티프를 바꾸면 두 곳을 같이 바꿀 것.
-산출물: icon-512.png (512×512), feature-1024x500.png (1024×500, 알파 없음)
+원본: play/source-icon.png (1367x768, 시안 캐릭터 + 투톤 대각 배경).
+산출물:
+  - icon-512.png            스토어 아이콘 (캐릭터 중심 정방형 크롭)
+  - feature-1024x500.png    피처 그래픽 (배경 재구성 + 캐릭터 우측 + 타이틀)
+  - ../app/src/main/res/drawable-xxxhdpi/ic_launcher_foreground.png
+                            어댑티브 런처 전경 (캐릭터 추출, 432px, 안전영역 맞춤)
+런처 배경(ic_launcher_background.xml)은 원본 배경색 2톤 대각 벡터로 별도 유지.
 """
-import math
+import os
 from PIL import Image, ImageDraw, ImageFont
 
-NAVY = '#0A141F'
-NAVY2 = '#071019'
-CYAN = '#53D1FF'
-
-HEAD = (54, 48, 15.5)
-HALO_R = 18.5
-AHOGE = [('M', (50.5, 34)), ('Q', (45, 23), (57, 20)), ('Q', (52, 27), (55.5, 33.5)), ('Q', (52.5, 34.5), (50.5, 34))]
-LTAIL = [('M', (43, 34)), ('Q', (28, 21), (22.5, 35)), ('Q', (20.5, 54), (31, 76)), ('Q', (32.5, 60), (38, 50)), ('Q', (42.5, 44), (43, 38))]
-RTAIL = [('M', (65, 34)), ('Q', (80, 21), (85.5, 35)), ('Q', (87.5, 54), (77, 77)), ('Q', (75.5, 60), (70, 50)), ('Q', (65.5, 44), (65, 38))]
-EYE_R = 1.15
-EYE_SEGS = [((46.8, 44.0), (50.2, 46.4)), ((46.8, 48.8), (50.2, 46.4)),
-            ((61.2, 44.0), (57.8, 46.4)), ((61.2, 48.8), (57.8, 46.4))]
-TH = math.radians(-55)
-BAND_RMID = 14.2; BAND_HALF = 1.5; BAND_A0 = 195; BAND_A1 = 345
-CUPS = [(40.2, 47.0), (67.8, 47.0)]; CUP_RX = 2.9; CUP_RY = 4.8
+CYAN = (82, 203, 248)      # 캐릭터 본색
+BG1 = '#072B37'            # 배경 좌상(틸)
+BG2 = '#03060B'            # 배경 우하(흑청)
 
 
-def _rrect_outline(halfL, halfW, q, n=8):
-    pts = []
-    def arc(ccx, ccy, a0, a1):
-        for i in range(n + 1):
-            a = math.radians(a0 + (a1 - a0) * i / n)
-            pts.append((ccx + q * math.cos(a), ccy + q * math.sin(a)))
-    arc(halfL - q, halfW - q, 0, 90); arc(-halfL + q, halfW - q, 90, 180)
-    arc(-halfL + q, -halfW + q, 180, 270); arc(halfL - q, -halfW + q, 270, 360)
-    return pts
+def load_source():
+    return Image.open('source-icon.png').convert('RGB')
 
 
-def _rot_rrect(cx, cy, th, halfL, halfW, q):
-    co, si = math.cos(th), math.sin(th)
-    return [(cx + x * co - y * si, cy + x * si + y * co) for x, y in _rrect_outline(halfL, halfW, q)]
+def extract_character(im):
+    """시안 캐릭터만 알파로 추출. 내부 디테일(배경색 선)은 뚫려서 배경이 비친다 — 의도된 것."""
+    w, h = im.size
+    src = im.load()
+    out = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    dst = out.load()
+    lo, hi = 45, 95
+    for y in range(h):
+        for x in range(w):
+            r, g, b = src[x, y]
+            d = ((r - CYAN[0]) ** 2 + (g - CYAN[1]) ** 2 + (b - CYAN[2]) ** 2) ** 0.5
+            if d < lo:
+                a = 255
+            elif d > hi:
+                continue
+            else:
+                a = int(255 * (hi - d) / (hi - lo))
+            dst[x, y] = (r, g, b, a)
+    bbox = out.getbbox()
+    return out.crop(bbox)
 
 
-def _edge_cluster(anchor_deg):
-    hx, hy = HEAD[0], HEAD[1]
-    a = math.radians(anchor_deg)
-    u = (math.cos(a), math.sin(a)); nv = (-u[1], u[0]); th = math.atan2(u[1], u[0])
-    bars = []
-    for off, Rb, halfL in ((-2.25, 14.2, 3.4), (0, 13.0, 4.8), (2.25, 14.2, 3.4)):
-        c = (hx + Rb * u[0] + off * nv[0], hy + Rb * u[1] + off * nv[1])
-        bars.append(_rot_rrect(c[0], c[1], th, halfL, 1.15, 0.8))
-    return bars
+def char_center_bbox(im):
+    ch = extract_character(im)
+    return ch
 
 
-DEV_BARS = _edge_cluster(38) + _edge_cluster(142)
+def make_icon(im):
+    """캐릭터 중심 정방형 크롭 → 512. 원본 배경(대각 투톤) 그대로 유지."""
+    w, h = im.size
+    ch = extract_character(im)
+    # 캐릭터 가로 중심 찾기: 추출 전 bbox를 다시 계산하기 위해 알파 투영
+    full = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    # extract_character가 crop해버리므로 중심은 원본에서 다시 측정
+    # (간단히: 시안 픽셀 x 평균)
+    src = im.load()
+    sx = n = 0
+    for y in range(0, h, 4):
+        for x in range(0, w, 4):
+            r, g, b = src[x, y]
+            if abs(r - CYAN[0]) < 60 and abs(g - CYAN[1]) < 60 and abs(b - CYAN[2]) < 60:
+                sx += x; n += 1
+    cx = sx // max(n, 1)
+    side = h
+    x0 = max(0, min(w - side, cx - side // 2))
+    im.crop((x0, 0, x0 + side, side)).resize((512, 512), Image.LANCZOS).save('icon-512.png')
 
 
-def qbez(p0, p1, p2, n=28):
-    return [((1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * p1[0] + t * t * p2[0],
-             (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * p1[1] + t * t * p2[1])
-            for t in [i / n for i in range(n + 1)]]
-
-
-def poly(cmds):
-    pts, cur = [], None
-    for c in cmds:
-        if c[0] == 'M':
-            cur = c[1]; pts.append(cur)
-        elif c[0] == 'Q':
-            pts += qbez(cur, c[1], c[2])[1:]; cur = c[2]
-    return pts
-
-
-def draw_motif(dr, ox, oy, scale):
-    T = lambda p: (ox + p[0] * scale, oy + p[1] * scale)
-    for sh in (LTAIL, RTAIL):
-        dr.polygon([T(p) for p in poly(sh)], fill=CYAN)
-    cx, cy, r = HEAD
-    hc = T((cx, cy)); hr = HALO_R * scale
-    dr.ellipse([hc[0] - hr, hc[1] - hr, hc[0] + hr, hc[1] + hr], fill=NAVY)
-    rr = r * scale
-    dr.ellipse([hc[0] - rr, hc[1] - rr, hc[0] + rr, hc[1] + rr], fill=CYAN)
-    band = []
-    for dd in range(BAND_A0, BAND_A1 + 1, 4):
-        a = math.radians(dd)
-        band.append(T((cx + (BAND_RMID + BAND_HALF) * math.cos(a), cy + (BAND_RMID + BAND_HALF) * math.sin(a))))
-    for dd in range(BAND_A1, BAND_A0 - 1, -4):
-        a = math.radians(dd)
-        band.append(T((cx + (BAND_RMID - BAND_HALF) * math.cos(a), cy + (BAND_RMID - BAND_HALF) * math.sin(a))))
-    dr.polygon(band, fill=NAVY)
-    for ccx, ccy in CUPS:
-        p0 = T((ccx - CUP_RX, ccy - CUP_RY)); p1 = T((ccx + CUP_RX, ccy + CUP_RY))
-        dr.ellipse([p0[0], p0[1], p1[0], p1[1]], fill=NAVY)
-    dr.polygon([T(p) for p in poly(AHOGE)], fill=CYAN)
-    def seg(a, b, r2):
-        A, B = T(a), T(b); cr = r2 * scale
-        dr.line([A, B], fill=NAVY, width=int(2 * cr))
-        for p in (A, B):
-            dr.ellipse([p[0] - cr, p[1] - cr, p[0] + cr, p[1] + cr], fill=NAVY)
-    for a, b in EYE_SEGS:
-        seg(a, b, EYE_R)
-    for bar in DEV_BARS:
-        dr.polygon([T(p) for p in bar], fill=NAVY)
-
-
-def make_icon():
-    S, SS = 512, 4
-    img = Image.new('RGBA', (S * SS, S * SS), NAVY)
-    dr = ImageDraw.Draw(img)
-    dr.polygon([(S * SS, 0), (S * SS, S * SS), (0, S * SS)], fill=NAVY2)
-    draw_motif(dr, 0, 0, S * SS / 108)
-    img.resize((S, S), Image.LANCZOS).save('icon-512.png')
+def make_launcher_fg(im):
+    ch = extract_character(im)
+    S = 432; SAFE = 252   # 108dp 캔버스(4x), 안전영역 66dp(264px)보다 살짝 안쪽
+    scale = min(SAFE / ch.width, SAFE / ch.height)
+    nw, nh = int(ch.width * scale), int(ch.height * scale)
+    ch = ch.resize((nw, nh), Image.LANCZOS)
+    canvas = Image.new('RGBA', (S, S), (0, 0, 0, 0))
+    canvas.paste(ch, ((S - nw) // 2, (S - nh) // 2), ch)
+    out = os.path.join('..', 'app', 'src', 'main', 'res', 'drawable-xxxhdpi')
+    os.makedirs(out, exist_ok=True)
+    canvas.save(os.path.join(out, 'ic_launcher_foreground.png'))
 
 
 def korean_font(size):
@@ -122,28 +92,32 @@ def korean_font(size):
     return ImageFont.load_default()
 
 
-def make_feature():
+def make_feature(im):
     W, H, SS = 1024, 500, 2
-    img = Image.new('RGB', (W * SS, H * SS), NAVY)
+    img = Image.new('RGB', (W * SS, H * SS), BG1)
     dr = ImageDraw.Draw(img)
-    c1 = tuple(int(NAVY[i:i + 2], 16) for i in (1, 3, 5))
-    c2 = tuple(int(NAVY2[i:i + 2], 16) for i in (1, 3, 5))
+    c1 = tuple(int(BG1[i:i + 2], 16) for i in (1, 3, 5))
+    c2 = tuple(int(BG2[i:i + 2], 16) for i in (1, 3, 5))
     for x in range(W * SS):
         t = x / (W * SS)
         col = tuple(int(c1[k] + (c2[k] - c1[k]) * t) for k in range(3))
         dr.line([(x, 0), (x, H * SS)], fill=col)
-    scale = H * SS * 0.86 / 108
-    draw_motif(dr, W * SS - 108 * scale - 60 * SS, (H * SS - 108 * scale) / 2, scale)
+    ch = extract_character(im)
+    target_h = int(H * SS * 0.88)
+    scale = target_h / ch.height
+    ch = ch.resize((int(ch.width * scale), target_h), Image.LANCZOS)
+    img.paste(ch, (W * SS - ch.width - 50 * SS, (H * SS - target_h) // 2), ch)
     title = korean_font(86 * SS)
     sub = korean_font(34 * SS)
     dr.text((64 * SS, 160 * SS), '합주실 예약 AI', font=title, fill='#FFFFFF')
-    dr.text((66 * SS, 282 * SS), '말로 찾는 밴드 합주실 빈 시간', font=sub, fill=CYAN)
+    dr.text((66 * SS, 282 * SS), '말로 찾는 밴드 합주실 빈 시간', font=sub, fill='#52CBF8')
     img.resize((W, H), Image.LANCZOS).save('feature-1024x500.png')
 
 
 if __name__ == '__main__':
-    import os
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    make_icon()
-    make_feature()
-    print('icon-512.png / feature-1024x500.png 재생성 완료')
+    im = load_source()
+    make_icon(im)
+    make_launcher_fg(im)
+    make_feature(im)
+    print('icon-512 / feature / launcher-fg 생성 완료')
