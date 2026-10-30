@@ -20,11 +20,39 @@ RTAIL = [('M', (65, 34)), ('Q', (80, 21), (85.5, 35)), ('Q', (87.5, 54), (77, 77
 EYE_R = 1.15
 EYE_SEGS = [((46.8, 44.0), (50.2, 46.4)), ((46.8, 48.8), (50.2, 46.4)),
             ((61.2, 44.0), (57.8, 46.4)), ((61.2, 48.8), (57.8, 46.4))]
-BAR_W = 2.4; BAR_RAD = 1.0
-R_BARS = [(60.8, 53.5, 62.5), (63.3, 49.5, 60.5), (65.4, 52.0, 57.8)]
-L_BARS = [(47.2, 53.5, 62.5), (44.7, 49.5, 60.5), (42.6, 52.0, 57.8)]
-BAND_RMID = 14.2; BAND_HALF = 1.4; BAND_A0 = 192; BAND_A1 = 348
-CUPS = [(38.4, 47.5), (69.6, 47.5)]; CUP_W = 4.4; CUP_H = 9.4; CUP_RAD = 2.0
+TH = math.radians(-55)
+BAND_RMID = 14.2; BAND_HALF = 1.5; BAND_A0 = 195; BAND_A1 = 345
+CUPS = [(40.2, 47.0), (67.8, 47.0)]; CUP_RX = 2.9; CUP_RY = 4.8
+
+
+def _rrect_outline(halfL, halfW, q, n=8):
+    pts = []
+    def arc(ccx, ccy, a0, a1):
+        for i in range(n + 1):
+            a = math.radians(a0 + (a1 - a0) * i / n)
+            pts.append((ccx + q * math.cos(a), ccy + q * math.sin(a)))
+    arc(halfL - q, halfW - q, 0, 90); arc(-halfL + q, halfW - q, 90, 180)
+    arc(-halfL + q, -halfW + q, 180, 270); arc(halfL - q, -halfW + q, 270, 360)
+    return pts
+
+
+def _rot_rrect(cx, cy, th, halfL, halfW, q):
+    co, si = math.cos(th), math.sin(th)
+    return [(cx + x * co - y * si, cy + x * si + y * co) for x, y in _rrect_outline(halfL, halfW, q)]
+
+
+_U = (math.cos(TH), math.sin(TH)); _NV = (-_U[1], _U[0])
+
+
+def _cluster(cx, cy):
+    bars = []
+    for off, halfL in ((-2.9, 4.5), (0, 6.5), (2.9, 4.5)):
+        c = (cx + off * _NV[0], cy + off * _NV[1])
+        bars.append(_rot_rrect(c[0], c[1], TH, halfL, 1.15, 0.8))
+    return bars
+
+
+DEV_BARS = _cluster(60.6, 56.0) + _cluster(47.4, 56.0)
 
 
 def qbez(p0, p1, p2, n=28):
@@ -52,9 +80,6 @@ def draw_motif(dr, ox, oy, scale):
     dr.ellipse([hc[0] - hr, hc[1] - hr, hc[0] + hr, hc[1] + hr], fill=NAVY)
     rr = r * scale
     dr.ellipse([hc[0] - rr, hc[1] - rr, hc[0] + rr, hc[1] + rr], fill=CYAN)
-    for ccx, ccy in CUPS:
-        p0 = T((ccx - CUP_W / 2, ccy - CUP_H / 2)); p1 = T((ccx + CUP_W / 2, ccy + CUP_H / 2))
-        dr.rounded_rectangle([p0[0], p0[1], p1[0], p1[1]], radius=CUP_RAD * scale, fill=CYAN)
     band = []
     for dd in range(BAND_A0, BAND_A1 + 1, 4):
         a = math.radians(dd)
@@ -63,6 +88,9 @@ def draw_motif(dr, ox, oy, scale):
         a = math.radians(dd)
         band.append(T((cx + (BAND_RMID - BAND_HALF) * math.cos(a), cy + (BAND_RMID - BAND_HALF) * math.sin(a))))
     dr.polygon(band, fill=NAVY)
+    for ccx, ccy in CUPS:
+        p0 = T((ccx - CUP_RX, ccy - CUP_RY)); p1 = T((ccx + CUP_RX, ccy + CUP_RY))
+        dr.ellipse([p0[0], p0[1], p1[0], p1[1]], fill=NAVY)
     dr.polygon([T(p) for p in poly(AHOGE)], fill=CYAN)
     def seg(a, b, r2):
         A, B = T(a), T(b); cr = r2 * scale
@@ -71,10 +99,8 @@ def draw_motif(dr, ox, oy, scale):
             dr.ellipse([p[0] - cr, p[1] - cr, p[0] + cr, p[1] + cr], fill=NAVY)
     for a, b in EYE_SEGS:
         seg(a, b, EYE_R)
-    for bars in (R_BARS, L_BARS):
-        for bx, ty, by in bars:
-            p0 = T((bx - BAR_W / 2, ty)); p1 = T((bx + BAR_W / 2, by))
-            dr.rounded_rectangle([p0[0], p0[1], p1[0], p1[1]], radius=BAR_RAD * scale, fill=NAVY)
+    for bar in DEV_BARS:
+        dr.polygon([T(p) for p in bar], fill=NAVY)
 
 
 def make_icon():
