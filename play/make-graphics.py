@@ -41,18 +41,18 @@ def _rot_rrect(cx, cy, th, halfL, halfW, q):
     return [(cx + x * co - y * si, cy + x * si + y * co) for x, y in _rrect_outline(halfL, halfW, q)]
 
 
-_U = (math.cos(TH), math.sin(TH)); _NV = (-_U[1], _U[0])
-
-
-def _cluster(cx, cy):
+def _edge_cluster(anchor_deg):
+    hx, hy = HEAD[0], HEAD[1]
+    a = math.radians(anchor_deg)
+    u = (math.cos(a), math.sin(a)); nv = (-u[1], u[0]); th = math.atan2(u[1], u[0])
     bars = []
-    for off, halfL in ((-2.9, 4.5), (0, 6.5), (2.9, 4.5)):
-        c = (cx + off * _NV[0], cy + off * _NV[1])
-        bars.append(_rot_rrect(c[0], c[1], TH, halfL, 1.15, 0.8))
+    for off, Rb, halfL in ((-2.9, 14.2, 3.4), (0, 13.0, 4.8), (2.9, 14.2, 3.4)):
+        c = (hx + Rb * u[0] + off * nv[0], hy + Rb * u[1] + off * nv[1])
+        bars.append(_rot_rrect(c[0], c[1], th, halfL, 1.15, 0.8))
     return bars
 
 
-DEV_BARS = _cluster(60.6, 56.0) + _cluster(47.4, 56.0)
+DEV_BARS = _edge_cluster(38) + _edge_cluster(142)
 
 
 def qbez(p0, p1, p2, n=28):
