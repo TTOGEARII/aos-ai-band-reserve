@@ -21,16 +21,17 @@ RTAIL = [('M', (65, 34)), ('Q', (80, 21), (85.5, 35)), ('Q', (87.5, 54), (77, 77
 EYE_R = 1.15
 EYE_SEGS = [((46.8, 44.0), (50.2, 46.4)), ((46.8, 48.8), (50.2, 46.4)),
             ((61.2, 44.0), (57.8, 46.4)), ((61.2, 48.8), (57.8, 46.4))]
-DEV_R = 1.15
-_th = math.radians(-55)
-_u = (math.cos(_th), -math.sin(_th)); _nv = (-_u[1], _u[0])
-def _bars(mcx, mcy):
-    out = []
-    for off, L in ((-2.7, 2.9), (0, 4.3), (2.7, 2.9)):
-        c = (mcx + off * _nv[0], mcy + off * _nv[1])
-        out.append(((c[0] - L * _u[0], c[1] - L * _u[1]), (c[0] + L * _u[0], c[1] + L * _u[1])))
-    return out
-DEV_SEGS = _bars(60.6, 56.0) + _bars(47.4, 56.0)
+DEV_R = 1.3
+def _cluster(cx, cy):
+    hx, hy = HEAD[0], HEAD[1]
+    d = math.hypot(cx - hx, cy - hy)
+    u = ((cx - hx) / d, (cy - hy) / d); tv = (-u[1], u[0])
+    segs = []
+    for off, Lin, Lout in ((-2.9, 2.2, 1.4), (0, 3.0, 2.2), (2.9, 2.2, 1.4)):
+        c = (cx + off * tv[0], cy + off * tv[1])
+        segs.append(((c[0] - Lin * u[0], c[1] - Lin * u[1]), (c[0] + Lout * u[0], c[1] + Lout * u[1])))
+    return segs
+DEV_SEGS = _cluster(64.2, 56.4) + _cluster(43.8, 56.4)
 
 
 def qbez(p0, p1, p2, n=28):
