@@ -22,8 +22,15 @@ EYE_R = 1.15
 EYE_SEGS = [((46.8, 44.0), (50.2, 46.4)), ((46.8, 48.8), (50.2, 46.4)),
             ((61.2, 44.0), (57.8, 46.4)), ((61.2, 48.8), (57.8, 46.4))]
 DEV_R = 1.15
-R_ZIG = [(60.8, 52.8), (63.4, 55.2), (60.2, 58.0), (62.8, 61.2), (62.2, 63.6)]
-L_ZIG = [(47.2, 52.8), (44.6, 55.2), (47.8, 58.0), (45.2, 61.2), (45.8, 63.6)]
+_th = math.radians(-55)
+_u = (math.cos(_th), -math.sin(_th)); _nv = (-_u[1], _u[0])
+def _bars(mcx, mcy):
+    out = []
+    for off, L in ((-2.7, 2.9), (0, 4.3), (2.7, 2.9)):
+        c = (mcx + off * _nv[0], mcy + off * _nv[1])
+        out.append(((c[0] - L * _u[0], c[1] - L * _u[1]), (c[0] + L * _u[0], c[1] + L * _u[1])))
+    return out
+DEV_SEGS = _bars(60.6, 56.0) + _bars(47.4, 56.0)
 
 
 def qbez(p0, p1, p2, n=28):
@@ -61,9 +68,8 @@ def draw_motif(dr, ox, oy, scale):
             dr.ellipse([p[0] - cr, p[1] - cr, p[0] + cr, p[1] + cr], fill=NAVY)
     for a, b in EYE_SEGS:
         seg(a, b, EYE_R)
-    for zig in (R_ZIG, L_ZIG):
-        for i in range(len(zig) - 1):
-            seg(zig[i], zig[i + 1], DEV_R)
+    for a, b in DEV_SEGS:
+        seg(a, b, DEV_R)
 
 
 def make_icon():
