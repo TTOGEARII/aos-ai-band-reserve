@@ -109,7 +109,7 @@ def make_feature(im):
     img.paste(ch, (W * SS - ch.width - 50 * SS, (H * SS - target_h) // 2), ch)
     title = korean_font(86 * SS)
     sub = korean_font(34 * SS)
-    dr.text((64 * SS, 160 * SS), '합주실 예약 AI', font=title, fill='#FFFFFF')
+    dr.text((64 * SS, 160 * SS), '에네쨩해줘!', font=title, fill='#FFFFFF')
     dr.text((66 * SS, 282 * SS), '말로 찾는 밴드 합주실 빈 시간', font=sub, fill='#52CBF8')
     img.resize((W, H), Image.LANCZOS).save('feature-1024x500.png')
 

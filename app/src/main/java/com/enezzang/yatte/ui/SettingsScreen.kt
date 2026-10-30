@@ -179,7 +179,7 @@ fun SettingsScreen(
         val uriHandler = LocalUriHandler.current
         TextButton(onClick = {
             // mailto는 공백을 %20으로 받아야 해서 URLEncoder의 '+'를 바꿔 준다.
-            val subject = URLEncoder.encode("[합주실 예약 AI] 부적절한 응답 신고", "UTF-8")
+            val subject = URLEncoder.encode("[에네쨩해줘!] 부적절한 응답 신고", "UTF-8")
                 .replace("+", "%20")
             uriHandler.openUri("mailto:$REPORT_EMAIL?subject=$subject")
         }) {

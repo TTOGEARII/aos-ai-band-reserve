@@ -67,10 +67,10 @@ jobs:
           EOF
 
       # 콘솔에 올라간 코드는 재사용 불가 → 실행 번호로 단조 증가시킨다.
-      # 수동 업로드(마지막 2)와 겹치지 않게 10부터 시작.
+      # 수동 업로드(마지막 20)와 겹치지 않게 100부터 시작.
       - name: versionCode 계산
         if: steps.guard.outputs.ok == 'true'
-        run: echo "VERSION_CODE=$((10 + GITHUB_RUN_NUMBER))" >> "$GITHUB_ENV"
+        run: echo "VERSION_CODE=$((100 + GITHUB_RUN_NUMBER))" >> "$GITHUB_ENV"
 
       - name: 테스트 + 서명 번들 빌드
         if: steps.guard.outputs.ok == 'true'

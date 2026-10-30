@@ -177,7 +177,7 @@ private fun ChatHeader(
             .padding(start = EnezzangYatteTheme.gutter, end = 4.dp, top = 10.dp, bottom = 10.dp),
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text("합주실 예약 AI", style = MaterialTheme.typography.headlineMedium)
+            Text("에네쨩해줘!", style = MaterialTheme.typography.headlineMedium)
             Text(
                 text = modelLabel,
                 style = MaterialTheme.typography.labelMedium,

@@ -70,7 +70,7 @@ fun AuthScreen(
     ) {
         Spacer(Modifier.height(24.dp))
 
-        Text("합주실 예약 AI", style = MaterialTheme.typography.headlineLarge)
+        Text("에네쨩해줘!", style = MaterialTheme.typography.headlineLarge)
         Text(
             text = "말로 물어보면 서울 합주실의 빈 시간을 찾아\n예약 링크까지 바로 받아요.",
             style = MaterialTheme.typography.bodyLarge,
