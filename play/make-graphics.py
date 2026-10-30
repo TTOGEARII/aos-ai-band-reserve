@@ -23,17 +23,18 @@ EYE_SEGS = [((46.8, 44.0), (50.2, 46.4)), ((46.8, 48.8), (50.2, 46.4)),
             ((61.2, 44.0), (57.8, 46.4)), ((61.2, 48.8), (57.8, 46.4))]
 def _lump(anchor_deg):
     hx, hy = HEAD[0], HEAD[1]
-    a = math.radians(anchor_deg)
-    u = (math.cos(a), math.sin(a)); tv = (-u[1], u[0])
     circles = []
-    for toff, Rb, r in ((-2.7, 14.1, 1.5), (0, 13.3, 2.0), (2.7, 14.1, 1.5)):
-        c = (hx + Rb * u[0] + toff * tv[0], hy + Rb * u[1] + toff * tv[1])
-        circles.append((c[0], c[1], r))
-    quad = [(hx + 14.4 * u[0] - 3.9 * tv[0], hy + 14.4 * u[1] - 3.9 * tv[1]),
-            (hx + 14.4 * u[0] + 3.9 * tv[0], hy + 14.4 * u[1] + 3.9 * tv[1]),
-            (hx + 19.0 * u[0] + 4.3 * tv[0], hy + 19.0 * u[1] + 4.3 * tv[1]),
-            (hx + 19.0 * u[0] - 4.3 * tv[0], hy + 19.0 * u[1] - 4.3 * tv[1])]
-    return circles, quad
+    for dd, Rb, r in ((-22, 14.3, 1.3), (-11, 13.8, 1.6), (0, 13.3, 2.0), (11, 13.8, 1.6), (22, 14.3, 1.3)):
+        a = math.radians(anchor_deg + dd)
+        circles.append((hx + Rb * math.cos(a), hy + Rb * math.sin(a), r))
+    band = []
+    for dd in range(-26, 27, 4):
+        a = math.radians(anchor_deg + dd)
+        band.append((hx + 14.4 * math.cos(a), hy + 14.4 * math.sin(a)))
+    for dd in range(26, -27, -4):
+        a = math.radians(anchor_deg + dd)
+        band.append((hx + 19.0 * math.cos(a), hy + 19.0 * math.sin(a)))
+    return circles, band
 DEV_LUMPS = [_lump(38), _lump(142)]
 
 
